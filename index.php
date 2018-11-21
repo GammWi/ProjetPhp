@@ -1,7 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: emile
- * Date: 21/11/2018
- * Time: 11:00
+ * File:  index.php
+ * Creation Date: 04/12/2017
+ * description:
+ *
+ * @author: canals
  */
+
+require_once __DIR__ . '/vendor/autoload.php';
