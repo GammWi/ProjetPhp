@@ -38,3 +38,14 @@ $MyItem = m\Item::where('id', '=', $id)->first();
 var_dump($_GET['id']);
 
 echo "Votre item ($id) : " . $MyItem->nom;
+
+$listeid = 1;
+if ( isset($_GET['liste']) ) {
+    if (!is_null( $_GET['liste'])){
+        $listeid = $_GET['liste'];
+    }
+}
+$liste = m\Liste::where('no', '=', $listeid)->first();
+foreach($liste->items as $item){
+    echo '</br> Item : ' . $item->nom ;
+}
