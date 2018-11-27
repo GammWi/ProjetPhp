@@ -8,7 +8,7 @@
 
 require_once 'vendor/autoload.php';
 
-use mywhishlist\models as m;
+use wishlist\models as m;
 
 $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('src/conf/conf.ini'));

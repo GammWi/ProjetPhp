@@ -6,7 +6,7 @@
  * Time: 10:22
  */
 
-namespace mywhishlist\models;
+namespace wishlist\models;
 
 
 class Liste extends \Illuminate\Database\Eloquent\Model
