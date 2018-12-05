@@ -21,7 +21,7 @@ if($itemid != -1){
     echo('Nom : ' . $item->nom . '<br>');
     echo('Prix : ' . $item->tarif . '<br>');
     echo('Description : ' . $item->descr . '<br>');
-    echo('<img src="../img/'. $item->img . '"height="64">');
+    echo('<img src="../web/img/'. $item->img . '"height="64">');
 } else {
     echo('Utiliser : afficherItem.php?item=ID' . '<br>');
 }
