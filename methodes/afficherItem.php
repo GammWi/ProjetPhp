@@ -23,8 +23,10 @@ if ( isset($_GET['item']) ) {
 }
 if($itemid != -1){
     $item = m\Item::where('id', '=', $itemid)->first();
-    echo($item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-    echo('<br><img src="../img/'. $item->img . '"height="64">');
+    echo('Nom : ' . $item->nom . '<br>');
+    echo('Prix : ' . $item->tarif . '<br>');
+    echo('Description : ' . $item->descr . '<br>');
+    echo('<img src="../img/'. $item->img . '"height="64">');
 } else {
     echo('Utiliser : afficherItem.php?item=ID' . '<br>');
 }
