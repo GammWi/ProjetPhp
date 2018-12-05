@@ -14,6 +14,13 @@ $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('../src/conf/conf.ini'));
 $db->setAsGlobal();
 $db->bootEloquent();
+
+$listeid = -1;
+if ( isset($_GET['liste']) ) {
+    if (!is_null( $_GET['liste'])){
+        $listeid = $_GET['liste'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -106,7 +113,7 @@ $db->bootEloquent();
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Accueil
+                Affichage d'une liste
             </h1>
         </section>
 
@@ -115,33 +122,15 @@ $db->bootEloquent();
 
             <!--CONTENU-->
 
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Toutes les listes</h3>
-                </div>
-                <div class="box-body no-padding">
-                    <div class="table-responsive mailbox-messages">
-                        <table class="table table-hover table-striped">
-                            <tbody>
-                            <?php
-                                //Get des listes
-                                $listes = m\Liste::get();
-                                foreach ($listes as $liste){
-                                    $lv = new v\ListeView($liste);
-                                    echo ($lv->render());
-                                    //echo('<tr>');
-                                    //echo('<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>');
-                                    //echo('<td class="mailbox-name"><a href="read-mail.html">' . $liste->titre . '</a></td>');
-                                    //echo('<td class="mailbox-subject">' . $liste->description . '</td>');
-                                    //echo('<td class="mailbox-subject"> Créée par ' . $liste->user_id . '</td>');
-                                    //echo('</td>');
-                                }
-                            ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <?php
+            if($listeid != -1){
+                $liste = m\Liste::where('no', '=', $listeid)->first();
+                foreach($liste->items as $item){
+                    $iv = new v\ItemView($item);
+                    echo($iv->render());
+                }
+            }
+            ?>
 
             <!--FIN DE CONTENU-->
 
