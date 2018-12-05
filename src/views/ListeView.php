@@ -23,10 +23,10 @@ class ListeView
     public function render(){
         $html = <<<END
 <tr>
-<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-<td class="mailbox-name"><a href="read-mail.html"> {$this->l->titre} </a></td>
-<td class="mailbox-subject"> {$this->l->description} </td>
-<td class="mailbox-subject"> Créée par {$this->l->user_id} </td>
+<td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
+<td class="mailbox-name"><a href="liste.php?liste={$this->l->no}">{$this->l->titre}</a></td>
+<td class="mailbox-subject">{$this->l->description}</td>
+<td class="mailbox-subject">Créée par {$this->l->user_id}</td>
 </td>
 END;
         return $html;

@@ -19,6 +19,7 @@ $listeid = -1;
 if ( isset($_GET['liste']) ) {
     if (!is_null( $_GET['liste'])){
         $listeid = $_GET['liste'];
+        $liste = m\Liste::where('no', '=', $listeid)->first();
     }
 }
 ?>
@@ -72,7 +73,7 @@ if ( isset($_GET['liste']) ) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Affichage d'une liste
+                Liste : <?php if($listeid != -1){echo($liste->titre);} ?>
             </h1>
         </section>
 
@@ -83,7 +84,6 @@ if ( isset($_GET['liste']) ) {
 
             <?php
             if($listeid != -1){
-                $liste = m\Liste::where('no', '=', $listeid)->first();
                 foreach($liste->items as $item){
                     $iv = new v\ItemView($item);
                     echo($iv->render());

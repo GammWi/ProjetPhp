@@ -31,7 +31,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Navigation</li>
-            <li><a href=""><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
+            <li><a href="index.php"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
             <li class="header">Espace personnel</li>
             <li><a href=""><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
             <li><a href=""><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>

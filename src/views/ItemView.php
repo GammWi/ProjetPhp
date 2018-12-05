@@ -22,8 +22,8 @@ class ItemView
 
     public function render(){
         $html = <<<END
-<div class="box box-widget widget-user-2">
-    <div class="widget-user-header bg-green">
+<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">
+    <div class="widget-user-header bg-red">
         <div class="widget-user-image">
             <img class="img-circle" src="../web/img/{$this->i->img}" alt="User Avatar">
         </div>
