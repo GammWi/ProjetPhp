@@ -25,8 +25,7 @@ if($listeid != -1){
     $liste = m\Liste::where('no', '=', $listeid)->first();
     echo('Items de la liste : "' . $liste->titre . '"<br>');
     foreach($liste->items as $item){
-        echo('</br> - ' . $item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-        echo('<br><img src="../img/'. $item->img . '"height="64">');
+        echo('<br> - <a href="afficherItem.php?item=' . $item->id . '">' . $item->nom . '</a>');
     }
 } else {
     echo('Utiliser : afficherListe.php?liste=ID' . '<br>');
