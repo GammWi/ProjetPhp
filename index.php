@@ -4,12 +4,26 @@
  * Creation Date: 04/12/2017
  */
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
+
+use wishlist\controleurs as c;
+
+$db = new Illuminate\Database\Capsule\Manager();
+$db->addConnection(parse_ini_file('src/conf/conf.ini'));
+$db->setAsGlobal();
+$db->bootEloquent();
+
 
 $app = new \Slim\Slim();
 
-$app->get('/hello/world', function () {
+$app->get('/', function () {
+    $app = \Slim\Slim::getInstance();
     echo "Hello, World !";
+    echo '<a href="'.$app->urlFor('afficherItem', ['id' => 1]) . '"> afficherItem </a>';
 });
+
+$app->get('/item/:id', function ($id) {
+    (new c\ControleurItem())->afficherItem($id);
+})->name('afficherItem');
 
 $app->run();

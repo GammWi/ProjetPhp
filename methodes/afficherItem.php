@@ -10,11 +10,6 @@ require_once '../vendor/autoload.php';
 
 use wishlist\models as m;
 
-$db = new Illuminate\Database\Capsule\Manager();
-$db->addConnection(parse_ini_file('../src/conf/conf.ini'));
-$db->setAsGlobal();
-$db->bootEloquent();
-
 $itemid = -1;
 if ( isset($_GET['item']) ) {
     if (!is_null( $_GET['item'])){
