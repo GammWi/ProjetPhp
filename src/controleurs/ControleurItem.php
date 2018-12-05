@@ -22,6 +22,6 @@ class ControleurItem
         $itemid = $id;
         $item = m\Item::where('id', '=', $itemid)->first();
         echo($item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-        echo('<br><img src="../web/img/'. $item->img . '"height="64">')
+        echo('<br><img src="../web/img/'. $item->img . '"height="64">');
     }
 }
