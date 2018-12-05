@@ -15,8 +15,6 @@ $db->addConnection(parse_ini_file('../src/conf/conf.ini'));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-echo('Utiliser : afficherListe.php?liste=ID' . '<br>');
-
 $listeid = -1;
 if ( isset($_GET['liste']) ) {
     if (!is_null( $_GET['liste'])){
@@ -25,7 +23,11 @@ if ( isset($_GET['liste']) ) {
 }
 if($listeid != -1){
     $liste = m\Liste::where('no', '=', $listeid)->first();
+    echo('Items de la liste : "' . $liste->titre . '"<br>');
     foreach($liste->items as $item){
-        echo '</br> Item : ' . $item->nom ;
+        echo('</br> - ' . $item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
+        echo('<br><img src="../img/'. $item->img . '"height="64">');
     }
+} else {
+    echo('Utiliser : afficherListe.php?liste=ID' . '<br>');
 }
