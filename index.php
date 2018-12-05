@@ -19,16 +19,16 @@ $app = new \Slim\Slim();
 $app->get('/', function () {
     $app = \Slim\Slim::getInstance();
     echo "Projet PHP : MyWishlist </br>";
-    echo '<a href="'.$app->urlFor('afficherItem', ['id' => 1]) . '"> Afficher un item</a></br>';
-    echo '<a href="'.$app->urlFor('afficherListe', ['id' => 2]) . '"> Afficher une liste</a></br>';
+    echo '<a href="'.$app->urlFor('afficherItem', ['id' => 2]) . '"> Afficher un item</a></br>';
+    echo '<a href="'.$app->urlFor('afficherListe', ['lid' => 3]) . '"> Afficher une liste</a></br>';
 });
 
 $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
 })->name('afficherItem');
 
-$app->get('/item/:id', function ($id) {
-    (new c\ControleurListe())->afficherListe($id);
+$app->get('/liste/:lid', function ($lid) {
+    (new c\ControleurListe())->afficherListe($lid);
 })->name('afficherListe');
 
 $app->run();

@@ -8,13 +8,17 @@
 
 namespace wishlist\controleurs;
 
+require_once 'vendor/autoload.php';
+
 use wishlist\models as m;
 
 class ControleurListe
 {
-
-    public function afficherListe($id) {
-        $listeid = $id;
+    /*
+     * fonction permettant d'afficher une liste
+     */
+    public function afficherListe($lid) {
+        $listeid = $lid;
         $liste = m\Liste::where('no', '=', $listeid)->first();
         echo('Items de la liste : "' . $liste->titre . '"<br>');
         foreach($liste->items as $item){
