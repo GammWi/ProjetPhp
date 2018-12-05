@@ -17,7 +17,12 @@ $db->bootEloquent();
 
 //Mes listes
 $listes = m\Liste::get();
-foreach ($listes as $liste) echo '<br>' . $liste->titre . '(' . $liste->no . ')';
+foreach ($listes as $liste){
+    echo '<br>' . $liste->titre . ' (n°' . $liste->no . ')';
+    foreach ($liste->items as $item) {
+        echo('<br>I: ' . $item->nom);
+    }
+}
 
 echo '<br><br>';
 
