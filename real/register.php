@@ -1,4 +1,4 @@
-*<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -76,7 +76,7 @@
             ?>
             <div class="alert alert-danger alert-dismissible">
                       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                      <h4><i class="icon fa fa-ban"></i> Mot de passe incorrect</h4>
+                      <h4><i class="icon fa fa-ban"></i>Mots de passe différents</h4>
             </div>
             <?php
           }
