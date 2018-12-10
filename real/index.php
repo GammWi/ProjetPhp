@@ -87,7 +87,7 @@ $db->bootEloquent();
                                 $listes = m\Liste::get();
                                 foreach ($listes as $liste){
                                     $lv = new v\ListeView($liste);
-                                    echo ($lv->render());
+                                    $lv->render();
                                 }
                             ?>
                             </tbody>

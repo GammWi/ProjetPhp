@@ -29,7 +29,7 @@ class ListeView
 <td class="mailbox-subject">Créée par {$this->l->user_id}</td>
 </tr>
 END;
-        return $html;
+        echo $html;
     }
 
 }

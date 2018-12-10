@@ -36,8 +36,8 @@ $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
 })->name('afficherItem');
 
-$app->get('/liste/:lid', function ($lid) {
-    (new c\ControleurListe())->afficherListe($lid);
-})->name('afficherListe');
+$app->get('/createNewList/:ltitre/:ldescription/:luserid', function ($ltitre, $ldescription, $luserid) {
+    (new c\ControleurListe())->creerListe($ltitre,$ldescription, $luserid);
+})->name('creerListe');
 
 $app->run();

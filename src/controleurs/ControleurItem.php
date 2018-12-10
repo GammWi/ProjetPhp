@@ -30,4 +30,14 @@ class ControleurItem
         $iv = new v\ItemView($item);
         echo($iv->render());
     }
+
+    public function creerItem($idListe, $nom, $description, $prix){
+        $i = new m\Item();
+        $i->liste_id = $idListe;
+        $i->nom = $nom;
+        $i->description = $description;
+        $i->tarif = $prix;
+        $i->save();
+        return $i->id;
+    }
 }

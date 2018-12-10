@@ -16,15 +16,17 @@ $db->addConnection(parse_ini_file('../src/conf/conf.ini'));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-$listeid = -1;
+if ( isset($_GET['addListe']) ) {
+    $listeid = (new c\ControleurListe())->creerListe($_POST['titre'], $_POST['description'], -1);
+    $liste = m\Liste::where('no', '=', $listeid)->first();
+} else {
+    $listeid = -1;
+}
 if ( isset($_GET['liste']) ) {
-    if (!is_null( $_GET['liste'])){
+    if (!is_null($_GET['liste'])) {
         $listeid = $_GET['liste'];
         $liste = m\Liste::where('no', '=', $listeid)->first();
     }
-}
-if ( isset($_GET['add']) ) {
-    (new c\ControleurListe())->creerListe($_POST['titre'], $_POST['description'], -1);
 }
 ?>
 
@@ -91,7 +93,7 @@ if ( isset($_GET['add']) ) {
             if($listeid != -1){
                 foreach($liste->items as $item){
                     $iv = new v\ItemView($item);
-                    echo($iv->render());
+                    $iv->render();
                 }
             }
             ?>
@@ -116,27 +118,27 @@ if ( isset($_GET['add']) ) {
                 </div>
                 <div class="modal-body">
 
-                    <form action="liste.php?add" method="post" class="form-horizontal">
+                    <form action="liste.php?addItem" method="post" class="form-horizontal">
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="nom" id="nom" class="col-sm-2 control-label">Nom d'item</label>
 
                                 <div class="col-sm-10">
-                                    <input type="description" class="form-control" id="description" placeholder="Nom">
+                                    <input type="description" class="form-control" name="nom" placeholder="Nom">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="Description">
+                                    <input type="text" class="form-control" name="description" placeholder="Description">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail3" class="col-sm-2 control-label">Prix</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="Description">
+                                    <input type="number" class="form-control" name="prix" placeholder="Description">
                                 </div>
                             </div>
                         </div>

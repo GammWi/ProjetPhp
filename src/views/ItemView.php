@@ -37,7 +37,7 @@ class ItemView
     </div>
 </div>
 END;
-        return $html;
+        echo $html;
     }
 
 }

@@ -38,5 +38,6 @@ class ControleurListe
         $l->description = $description;
         $l->user_id = $userid;
         $l->save();
+        return $l->no;
     }
 }
