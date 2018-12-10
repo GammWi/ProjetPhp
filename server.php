@@ -32,28 +32,21 @@ error_reporting(e_al1);
            if($rows==1)
             {
                 $donnee=$checkPwd->fetch();
-	var_dump($donnee);
                 if($password==$donnee["password"])
                 {
-		    echo("co");
-                    $_SESSION['email']=$email;
+		    $_SESSION['email']=$email;
                     $_SESSION['name']=$name;
-             	    // header('location: index.php');
+             	    header('location: index.php');
                 }
                 else
                 {
-			echo("mvs mdp");
-			var_dump($_POST);
-			var_dump($donnee);
-               	    // header('Location: login.php?error=2'); 
+	      	    header('Location: login.php?error=2'); 
                 } 
             }
        }
        else
        {	
-		echo("no user");
-		var_dump($_POST);
-//      	  header('Location: login.php?error=1'); 
+	  header('Location: login.php?error=1'); 
        }
     } else {
 	
@@ -65,9 +58,7 @@ error_reporting(e_al1);
        $password2 = md5(htmlentities($_POST['password2']));
 	if($_POST['password']!=$_POST['password2'])
 	{
-		var_dump($_POST);
-		echo("error mdp");
-	 // header('location: register.php?error=2');
+	 header('location: register.php?error=2');
 	}
 	else
 	{
@@ -75,9 +66,7 @@ error_reporting(e_al1);
        $rows = $checkUser->rowCount();
        if($rows==1)
        {
-		echo("error user");
 		var_dump($_POST);
-	 // header('Location: register.php?error=1'); 
        }
        else
        {
@@ -85,9 +74,6 @@ error_reporting(e_al1);
            $addUser->execute(array($email, $name, $password));
 	   $_SESSION['email']=$email;
 	   $_SESSION['name']=$name;
-		var_dump($_POST);
-		echo("add suer");
-         //  header('location: login.php');
        }
 	}
     }
