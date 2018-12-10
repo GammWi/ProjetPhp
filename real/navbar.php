@@ -34,7 +34,7 @@
             <li><a href="index.php"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
             <li class="header">Espace personnel</li>
             <li><a href=""><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
-            <li><a href=""><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
+            <li><a href="createListe.php"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
             <li><a href=""><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
         </ul>
     </section>

@@ -9,25 +9,12 @@ require_once '../vendor/autoload.php';
 
 use wishlist\models as m;
 use wishlist\views as v;
-use wishlist\controleurs as c;
 
 $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('../src/conf/conf.ini'));
 $db->setAsGlobal();
 $db->bootEloquent();
-
-$listeid = -1;
-if ( isset($_GET['liste']) ) {
-    if (!is_null( $_GET['liste'])){
-        $listeid = $_GET['liste'];
-        $liste = m\Liste::where('no', '=', $listeid)->first();
-    }
-}
-if ( isset($_GET['add']) ) {
-    (new c\ControleurListe())->creerListe($_POST['titre'], $_POST['description'], -1);
-}
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,7 +65,7 @@ if ( isset($_GET['add']) ) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Liste : <?php if($listeid != -1){echo($liste->titre);} ?>
+                Création d'une nouvelle liste
             </h1>
         </section>
 
@@ -87,69 +74,41 @@ if ( isset($_GET['add']) ) {
 
             <!--CONTENU-->
 
-            <?php
-            if($listeid != -1){
-                foreach($liste->items as $item){
-                    $iv = new v\ItemView($item);
-                    echo($iv->render());
-                }
-            }
-            ?>
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Nouvelle liste</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="liste.php?add" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="titre" id="titre" class="col-sm-2 control-label">Nom de la liste</label>
 
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-default">
-                Ajouter un item
-            </button>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="titre" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Description" name="description">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Créer</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
 
             <!--FIN DE CONTENU-->
 
         </section>
         <!-- /.content -->
-    </div>
-
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Ajout d'un item</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form action="liste.php?add" method="post" class="form-horizontal">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="nom" id="nom" class="col-sm-2 control-label">Nom d'item</label>
-
-                                <div class="col-sm-10">
-                                    <input type="description" class="form-control" id="description" placeholder="Nom">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="Description">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Prix</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="Description">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-danger pull-right">Ajouter</button>
-                        </div>
-                        <!-- /.box-footer -->
-                    </form>
-
-                </div>
-            </div>
-        </div>
     </div>
 
     <?php include("footer.php"); ?>
