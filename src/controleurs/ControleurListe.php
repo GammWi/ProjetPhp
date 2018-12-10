@@ -8,7 +8,7 @@
 
 namespace wishlist\controleurs;
 
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use wishlist\models as m;
 use wishlist\views as v;
@@ -21,15 +21,7 @@ class ControleurListe
     public function afficherListe($lid) {
         $listeid = $lid;
         $liste = m\Liste::where('no', '=', $listeid)->first();
-        echo('Items de la liste : "' . $liste->titre . '"<br>');
-        foreach($liste->items as $item){
-            /*
-            echo('</br> - ' . $item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-            echo('<br><img src="../web/img/'. $item->img . '"height="64">');
-            */
-            $lv = new v\ListeView($liste);
-            echo ($lv->render());
-        }
+        (new v\SingleListeView($liste))->renderFinal();
     }
 
     public function creerListe($titre, $description, $userid){

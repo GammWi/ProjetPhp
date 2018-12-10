@@ -21,12 +21,7 @@ class ControleurItem
      */
     function afficherItem($id){
 
-        $itemid = $id;
-        $item = m\Item::where('id', '=', $itemid)->first();
-        /*
-        echo($item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-        echo('<br><img src="../web/img/'. $item->img . '"height="64">');
-        */
+        $item = m\Item::where('id', '=', $id)->first();
         $iv = new v\ItemView($item);
         echo($iv->render());
     }

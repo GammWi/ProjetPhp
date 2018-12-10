@@ -18,12 +18,7 @@ $db->bootEloquent();
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    echo (new v\ListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
-    /*
-    echo "Projet PHP : MyWishlist </br>";
-    echo '<a href="'.$app->urlFor('afficherItem', ['id' => 2]) . '"> Afficher un item</a></br>';
-    echo '<a href="'.$app->urlFor('afficherListe', ['lid' => 3]) . '"> Afficher une liste</a></br>';
-    */
+    (new v\AllListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
 });
 
 $app->get('/liste/:lid', function ($lid) {
