@@ -25,7 +25,7 @@
             </div>
             <div class="pull-left info">
                 <p>Fanny Pierre</p>
-                <a href="#"><i class="fa fa-circle text-danger"></i> Se déconnecter</a>
+                <a href="Deconnexion.php"><i class="fa fa-circle text-danger"></i> Se déconnecter</a>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -40,3 +40,4 @@
     </section>
     <!-- /.sidebar -->
 </aside>
+

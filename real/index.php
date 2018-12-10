@@ -7,6 +7,8 @@
  */
 require_once '../vendor/autoload.php';
 
+session_start();
+
 use wishlist\models as m;
 use wishlist\views as v;
 
