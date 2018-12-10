@@ -23,13 +23,4 @@ class ControleurListe
         $liste = m\Liste::where('no', '=', $listeid)->first();
         (new v\SingleListeView($liste))->renderFinal();
     }
-
-    public function creerListe($titre, $description, $userid){
-        $l = new m\Liste();
-        $l->titre = $titre;
-        $l->description = $description;
-        $l->user_id = $userid;
-        $l->save();
-        return $l->no;
-    }
 }

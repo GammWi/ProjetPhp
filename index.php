@@ -29,8 +29,12 @@ $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
 })->name('afficherItem');
 
-$app->get('/createNewList/:ltitre/:ldescription/:luserid', function ($ltitre, $ldescription, $luserid) {
-    (new c\ControleurListe())->creerListe($ltitre,$ldescription, $luserid);
-})->name('creerListe');
+$app->get('/createListe', function () {
+    (new c\ControleurCreationListe())->afficherCreateurListe();
+})->name('createListe');
+
+$app->get('/insertNewListe', function () {
+    (new c\ControleurCreationListe())->creerListe('Titre','Desc',-1);
+})->name('insertNewListe');
 
 $app->run();
