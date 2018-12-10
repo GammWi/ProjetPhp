@@ -7,8 +7,6 @@
  */
 require_once '../vendor/autoload.php';
 
-session_start();
-
 use wishlist\models as m;
 use wishlist\views as v;
 
@@ -67,7 +65,7 @@ $db->bootEloquent();
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Accueil
+                Création d'une nouvelle liste
             </h1>
         </section>
 
@@ -78,24 +76,33 @@ $db->bootEloquent();
 
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Toutes les listes</h3>
+                    <h3 class="box-title">Nouvelle liste</h3>
                 </div>
-                <div class="box-body no-padding">
-                    <div class="table-responsive mailbox-messages">
-                        <table class="table table-hover table-striped">
-                            <tbody>
-                            <?php
-                                //Get des listes
-                                $listes = m\Liste::get();
-                                foreach ($listes as $liste){
-                                    $lv = new v\ListeView($liste);
-                                    echo ($lv->render());
-                                }
-                            ?>
-                            </tbody>
-                        </table>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="liste.php?add" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="titre" id="titre" class="col-sm-2 control-label">Nom de la liste</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="titre" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Description" name="description">
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Créer</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
             </div>
 
             <!--FIN DE CONTENU-->

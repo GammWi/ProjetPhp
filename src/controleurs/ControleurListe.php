@@ -8,7 +8,7 @@
 
 namespace wishlist\controleurs;
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use wishlist\models as m;
 use wishlist\views as v;
@@ -30,5 +30,13 @@ class ControleurListe
             $lv = new v\ListeView($liste);
             echo ($lv->render());
         }
+    }
+
+    public function creerListe($titre, $description, $userid){
+        $l = new m\Liste();
+        $l->titre = $titre;
+        $l->description = $description;
+        $l->user_id = $userid;
+        $l->save();
     }
 }
