@@ -6,7 +6,7 @@
  * Time: 11:19
  */
 
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use wishlist\models as m;
 

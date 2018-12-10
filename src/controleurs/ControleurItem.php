@@ -21,13 +21,18 @@ class ControleurItem
      */
     function afficherItem($id){
 
-        $itemid = $id;
-        $item = m\Item::where('id', '=', $itemid)->first();
-        /*
-        echo($item->nom . ' (' . $item->descr . ') : ' . $item->tarif . '€');
-        echo('<br><img src="../web/img/'. $item->img . '"height="64">');
-        */
+        $item = m\Item::where('id', '=', $id)->first();
         $iv = new v\ItemView($item);
         echo($iv->render());
+    }
+
+    public function creerItem($idListe, $nom, $description, $prix){
+        $i = new m\Item();
+        $i->liste_id = $idListe;
+        $i->nom = $nom;
+        $i->description = $description;
+        $i->tarif = $prix;
+        $i->save();
+        return $i->id;
     }
 }

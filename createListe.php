@@ -80,7 +80,7 @@ $db->bootEloquent();
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form action="liste.php?add" method="post" class="form-horizontal">
+                <form action="liste.php?addListe" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="titre" id="titre" class="col-sm-2 control-label">Nom de la liste</label>
