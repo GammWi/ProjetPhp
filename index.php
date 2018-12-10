@@ -3,12 +3,16 @@
  * File:  index.php
  * Creation Date: 04/12/2017
  */
-
 require_once 'vendor/autoload.php';
+
+session_start();
 
 use wishlist\controleurs as c;
 use wishlist\views as v;
 use wishlist\models as m;
+
+if(!empty($_SESSION))
+{
 
 $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('src/conf/conf.ini'));
@@ -38,3 +42,8 @@ $app->get('/insertNewListe', function () {
 })->name('insertNewListe');
 
 $app->run();
+}
+else
+{
+	header("Location:login.php?error=ntm");
+}
