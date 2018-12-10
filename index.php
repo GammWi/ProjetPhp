@@ -8,19 +8,17 @@ require_once 'vendor/autoload.php';
 
 use wishlist\controleurs as c;
 use wishlist\views as v;
+use wishlist\models as m;
 
 $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('src/conf/conf.ini'));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    $app = \Slim\Slim::getInstance();
-    $vueAccueil = new v\AccueilView();
-    echo ($vueAccueil->render());
+    echo (new v\ListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
     /*
     echo "Projet PHP : MyWishlist </br>";
     echo '<a href="'.$app->urlFor('afficherItem', ['id' => 2]) . '"> Afficher un item</a></br>';

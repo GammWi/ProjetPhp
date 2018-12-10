@@ -11,22 +11,15 @@ namespace wishlist\views;
 use wishlist\models as m;
 use wishlist\views as v;
 
-class AccueilView
+abstract class AbstractView
 {
 
-    public function render(){
-        $listeid = -1;
+    public abstract function render();
 
-        if ( isset($_GET['liste']) ) {
-            if (!is_null($_GET['liste'])) {
-                $listeid = $_GET['liste'];
-                $liste = m\Liste::where('no', '=', $listeid)->first();
-            }
-        }
+    public function renderHeader(){
+
         $html = <<<END
-<!DOCTYPE html>
-<html>
-<head>
+        <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>MyWishList</title>
@@ -63,18 +56,29 @@ class AccueilView
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+END;
+        $html .= "</head>";
+        echo $html;
+    }
+
+    /**
+     * fonction qui permet d'afficher le corps
+     */
+    function renderBody(){
+        $html = <<<END
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
+END;
 
-    <?php include("navbar.php"); ?>
+    include("real/navbar.php");
+    $html.=<<<END
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Liste : <?php if($listeid != -1){echo($liste->titre);} ?>
+                Accueil
             </h1>
         </section>
 
@@ -82,18 +86,20 @@ class AccueilView
         <section class="content">
 
             <!--CONTENU-->
-            
-            
-            $liste
-            
-            
+
+END;
+        echo $html;
+        $this->render();
+        $html = <<<END
             <!--FIN DE CONTENU-->
 
         </section>
         <!-- /.content -->
     </div>
+END;
+    include("real/footer.php");
 
-    <?php include("footer.php"); ?>
+    $html.=<<<END
 
 </div>
 <!-- ./wrapper -->
@@ -117,7 +123,7 @@ class AccueilView
 <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <!-- jQuery Knob Chart -->
-<script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<script src="real/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
 <script src="bower_components/moment/min/moment.min.js"></script>
 <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -136,9 +142,24 @@ class AccueilView
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 </body>
-</html>
-
 END;
-        return $html;
+    echo $html;
+    }
+
+    /**
+     * fonction permettant d'afficher tout le contenu d'une page
+     * @return string
+     */
+    public function renderFinal()
+    {
+        $html = <<<END
+<!DOCTYPE html>
+<html>
+END;
+        echo $html;
+        $this->renderHeader();
+        $this->renderbody() ;
+        $html = "</html>";
+        echo $html;
     }
 }

@@ -8,7 +8,7 @@
 
 namespace wishlist\views;
 
-class ListeView
+class ListeView extends AbstractView
 {
 
     private $l;
@@ -29,7 +29,7 @@ class ListeView
 <td class="mailbox-subject">Créée par {$this->l->user_id}</td>
 </td>
 END;
-        return $html;
+        echo $html;
     }
 
 }
