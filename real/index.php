@@ -7,6 +7,8 @@
  */
 require_once '../vendor/autoload.php';
 
+session_start();
+
 use wishlist\models as m;
 use wishlist\views as v;
 
@@ -87,13 +89,7 @@ $db->bootEloquent();
                                 $listes = m\Liste::get();
                                 foreach ($listes as $liste){
                                     $lv = new v\ListeView($liste);
-                                    echo ($lv->render());
-                                    //echo('<tr>');
-                                    //echo('<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>');
-                                    //echo('<td class="mailbox-name"><a href="read-mail.html">' . $liste->titre . '</a></td>');
-                                    //echo('<td class="mailbox-subject">' . $liste->description . '</td>');
-                                    //echo('<td class="mailbox-subject"> Créée par ' . $liste->user_id . '</td>');
-                                    //echo('</td>');
+                                    $lv->render();
                                 }
                             ?>
                             </tbody>

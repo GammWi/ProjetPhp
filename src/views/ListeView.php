@@ -27,7 +27,7 @@ class ListeView extends AbstractView
 <td class="mailbox-name"><a href="liste.php?liste={$this->l->no}">{$this->l->titre}</a></td>
 <td class="mailbox-subject">{$this->l->description}</td>
 <td class="mailbox-subject">Créée par {$this->l->user_id}</td>
-</td>
+</tr>
 END;
         echo $html;
     }
