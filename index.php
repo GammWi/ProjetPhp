@@ -29,6 +29,10 @@ $app->get('/liste/:lid', function ($lid) {
     (new c\ControleurListe())->afficherListe($lid);
 })->name('afficherListe');
 
+$app->get('/userListes/:userId', function ($userId) {
+    (new c\ControleurListe())->afficherListeUtilisateur($userId);
+})->name('afficherListe');
+
 $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
 })->name('afficherItem');
@@ -40,6 +44,14 @@ $app->get('/createListe', function () {
 $app->get('/insertNewListe', function () {
 	(new c\ControleurCreationListe())->creerListe('Titre','Desc',$_SESSION['id']);
 })->name('insertNewListe');
+
+$app->get('/afficherMyProfile', function () {
+    (new c\ControleurProfile())->afficherProfile($_SESSION['id']);
+})->name('afficherMyProfile');
+
+$app->get('/afficherProfile/:id', function ($id) {
+    (new c\ControleurProfile())->afficherProfile($id);
+})->name('afficherProfile');
 
 $app->run();
 }

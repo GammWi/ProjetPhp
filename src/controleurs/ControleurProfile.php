@@ -18,9 +18,8 @@ class ControleurProfile
     /*
      * fonction permettant un profile
      */
-    public function afficherProfile($lid) {
-        $listeid = $lid;
-        $liste = m\Liste::where('no', '=', $listeid)->first();
-        (new v\SingleListeView($liste))->renderFinal();
+    public function afficherProfile($userId) {
+        $user = m\User::where('id', '=', $userId)->first();
+        (new v\MyProfileView($user))->renderFinal();
     }
 }

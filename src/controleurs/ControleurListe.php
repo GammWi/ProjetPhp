@@ -23,4 +23,12 @@ class ControleurListe
         $liste = m\Liste::where('no', '=', $listeid)->first();
         (new v\SingleListeView($liste))->renderFinal();
     }
+
+    /*
+     * fonction permettant d'afficher les listes d'un utilisateur
+     */
+    public function afficherListeUtilisateur($userId) {
+        $user = m\User::where('id', '=', $userId)->first();
+        (new v\UserListeView($user))->renderFinal();
+    }
 }
