@@ -24,8 +24,17 @@
                 <img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Fanny Pierre</p>
-                <a href="Deconnexion.php"><i class="fa fa-circle text-success"></i> Se déconnecter</a>
+<?php
+if(!empty($_SESSION))
+{
+	      echo '<p>' . $_SESSION["name"] . '</p>';
+}
+else
+{
+               echo '<p>Pas connecté</p>';
+}
+?> 
+               <a href="Deconnexion.php"><i class="fa fa-circle text-success"></i> Se déconnecter</a>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
