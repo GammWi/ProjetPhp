@@ -14,6 +14,8 @@ use wishlist\views as v;
 abstract class AbstractView
 {
 
+    protected $viewName;
+
     public abstract function render();
 
     public function renderHeader(){
@@ -78,7 +80,7 @@ END;
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Accueil
+                {$this->viewName}
             </h1>
         </section>
 

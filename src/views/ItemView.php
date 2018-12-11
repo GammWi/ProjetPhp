@@ -18,6 +18,7 @@ class ItemView extends AbstractView
      */
     public function __construct($item) {
         $this->i = $item;
+        $this->viewName = "Item = " . $this->i->nom;
     }
 
     public function render(){

@@ -19,7 +19,7 @@ class CreateListeView extends AbstractView
      * ListeView constructor.
      */
     public function __construct() {
-        $this->l = m\Liste::get();
+        $this->viewName = "Création d'une liste";
     }
 
     public function render(){

@@ -20,6 +20,7 @@ class AllListeView extends AbstractView
      */
     public function __construct() {
         $this->l = m\Liste::get();
+        $this->viewName = "Toutes les listes";
     }
 
     public function render(){
@@ -37,7 +38,7 @@ END;
             $html .= <<<END
             <tr>
                 <td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
-                <td class="mailbox-name"><a href="/liste/{$liste->no}">{$liste->titre}</a></td>
+                <td class="mailbox-name"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a></td>
                 <td class="mailbox-subject">{$liste->description}</td>
                 <td class="mailbox-subject">Créée par {$liste->user_id}</td>
             </tr>

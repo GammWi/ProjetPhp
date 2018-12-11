@@ -21,6 +21,7 @@ class SingleListeView extends AbstractView
      */
     public function __construct(m\Liste $liste) {
         $this->l = $liste;
+        $this->viewName = "Liste : " . $this->l->titre;
     }
 
     public function render(){
