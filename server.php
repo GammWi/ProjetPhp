@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 
     try
     {
-        $bdd = new PDO('mysql:host=localhost;dbname=wishlist;charset=utf8','roger','roger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $bdd = new PDO('mysql:host=51.255.49.92:3306;dbname=wishlist;charset=utf8','roger','roger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
     }
     catch (Exception $e)
     {
@@ -15,28 +15,24 @@ ini_set('display_errors', 1);
 
     if (isset($_POST['login'])) {
        $checkUser = $bdd->prepare('Select * from user where email=?');
-	$getName = $bdd->prepare('Select name from user where email=?');
-
        $email = htmlentities($_POST["email"]);
-       $name = "";
        $password = md5(htmlentities($_POST["password"]));
        $checkUser->execute(array($email));
        $rows = $checkUser->rowCount();
        if($rows==1)
-       {	
-           $checkPwd = $bdd->prepare('Select password from user where email=?');
-           $checkPwd->execute(array($email));
-	   $rows = $checkPwd->rowCount();
+       {
+           $checkUser->execute(array($email));
+	   $rows = $checkUser->rowCount();
            if($rows==1)
             {
-                $donnee=$checkPwd->fetch();
+                $donnee=$checkUser->fetch();
                 if($password==$donnee["password"])
-                {
-			$getName->execute(array($email));
-			$donnee = $getName->fetch();
-			$name = $donnee["name"];
+       		{
+		    $name = $donnee["name"];
+		    $id = $donnee[0];
 		    $_SESSION['email']=$email;
                     $_SESSION['name']=$name;
+		    $_SESSION['id']=$id;
              	    header('location: index.php');
                 }
                 else

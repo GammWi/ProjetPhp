@@ -38,7 +38,7 @@ $app->get('/createListe', function () {
 })->name('createListe');
 
 $app->get('/insertNewListe', function () {
-    (new c\ControleurCreationListe())->creerListe('Titre','Desc',-1);
+	(new c\ControleurCreationListe())->creerListe('Titre','Desc',$_SESSION['id']);
 })->name('insertNewListe');
 
 $app->run();
