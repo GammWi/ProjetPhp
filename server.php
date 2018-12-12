@@ -16,7 +16,7 @@ ini_set('display_errors', 1);
     if (isset($_POST['login'])) {
        $checkUser = $bdd->prepare('Select * from user where email=?');
        $email = htmlentities($_POST["email"]);
-       $password = md5(htmlentities($_POST["password"]));
+       $password = password_hash(htmlentities($_POST["password"]), PASSWORRD_BCRYPT);
        $checkUser->execute(array($email));
        $rows = $checkUser->rowCount();
        if($rows==1)
@@ -51,8 +51,8 @@ ini_set('display_errors', 1);
        
        $email = htmlentities($_POST['email']);
        $name = htmlentities($_POST['name']);
-       $password = md5(htmlentities($_POST['password']));
-       $password2 = md5(htmlentities($_POST['password2']));
+       $password = password_hash(htmlentities($_POST['password']),PASSWORD_BCRYPT);
+       $password2 = password_hash(htmlentities($_POST['password2']),PASSWORD_BCRYPT);
 	if($_POST['password']!=$_POST['password2'])
 	{
 	 header("location: register.php?error=2");
