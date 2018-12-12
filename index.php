@@ -31,7 +31,7 @@ $app->get('/liste/:lid', function ($lid) {
 
 $app->get('/userListes/:userId', function ($userId) {
     (new c\ControleurListe())->afficherListeUtilisateur($userId);
-})->name('afficherListe');
+})->name('afficherListeUserId');
 
 $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
@@ -41,12 +41,15 @@ $app->get('/createListe', function () {
     (new c\ControleurCreationListe())->afficherCreateurListe();
 })->name('createListe');
 
-$app->get('/insertNewListe', function () {
-	(new c\ControleurCreationListe())->creerListe('Titre','Desc',$_SESSION['id']);
+$app->post('/insertNewListe', function () {
+    $app = \Slim\Slim::getInstance();
+    $titre = $app->request->post('titre');
+    $desc = $app->request->post('description');
+	(new c\ControleurCreationListe())->creerListe($titre,$desc,$_SESSION['id']);
 })->name('insertNewListe');
 
 $app->get('/afficherMyProfile', function () {
-    (new c\ControleurProfile())->afficherProfile($_SESSION['id']);
+    (new c\ControleurProfile())->afficherMonProfile();
 })->name('afficherMyProfile');
 
 $app->get('/afficherProfile/:id', function ($id) {

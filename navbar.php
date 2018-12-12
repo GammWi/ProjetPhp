@@ -1,3 +1,6 @@
+<?php
+    $app = \Slim\Slim::getInstance();
+?>
 <header class="main-header">
     <!-- Logo -->
     <a href="/" class="logo">
