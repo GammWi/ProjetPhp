@@ -16,7 +16,7 @@ ini_set('display_errors', 1);
     if (isset($_POST['login'])) {
        $checkUser = $bdd->prepare('Select * from user where email=?');
        $email = htmlentities($_POST["email"]);
-       $password = password_hash(htmlentities($_POST["password"]), PASSWORRD_BCRYPT);
+       $password = htmlentities($_POST["password"]);
        $checkUser->execute(array($email));
        $rows = $checkUser->rowCount();
        if($rows==1)
@@ -26,7 +26,7 @@ ini_set('display_errors', 1);
            if($rows==1)
             {
                 $donnee=$checkUser->fetch();
-                if($password==$donnee["password"])
+                if(password_verify($password,$donnee["password"]))
        		{
 		    $name = $donnee["name"];
 		    $id = $donnee[0];
@@ -37,7 +37,7 @@ ini_set('display_errors', 1);
                 }
                 else
                 {
-	      	    header("Location: login.php?error=2"); 
+	    	   header("Location: login.php?error=2"); 
                 } 
             }
        }
