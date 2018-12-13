@@ -18,4 +18,8 @@ class Liste extends \Illuminate\Database\Eloquent\Model
     public function items(){
         return $this->hasMany('\wishlist\models\Item','liste_id');
     }
+
+    public function user(){
+        return $this->belongsTo('\wishlist\models\User','user_id');
+    }
 }

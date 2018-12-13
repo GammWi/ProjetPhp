@@ -20,7 +20,7 @@ class UserListeView extends AbstractView
      * ListeView constructor.
      */
     public function __construct($user) {
-        $this->u->user;
+        $this->u = $user;
         $this->l = $this->u->listes;
         $this->viewName = "Listes de " . $this->u->name;
     }
@@ -42,7 +42,7 @@ END;
                 <td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
                 <td class="mailbox-name"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a></td>
                 <td class="mailbox-subject">{$liste->description}</td>
-                <td class="mailbox-subject">Créée par {$liste->user_id}</td>
+                <td class="mailbox-subject">Créée par {$liste->user->name}</td>
             </tr>
 END;
         }

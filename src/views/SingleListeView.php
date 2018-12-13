@@ -31,9 +31,9 @@ class SingleListeView extends AbstractView
             $iv->render();
         }
         $html .= <<<END
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-default">
-            Ajouter un item
-        </button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-default">
+                    Ajouter un item
+                </button>
 END;
         echo $html;
     }

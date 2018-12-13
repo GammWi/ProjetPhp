@@ -45,7 +45,8 @@ $app->post('/insertNewListe', function () {
     $app = \Slim\Slim::getInstance();
     $titre = $app->request->post('titre');
     $desc = $app->request->post('description');
-	(new c\ControleurCreationListe())->creerListe($titre,$desc,$_SESSION['id']);
+	$l = (new c\ControleurCreationListe())->creerListe($titre,$desc,$_SESSION['id']);
+    (new v\SingleListeView($l))->renderFinal();
 })->name('insertNewListe');
 
 $app->get('/afficherMyProfile', function () {
@@ -55,6 +56,9 @@ $app->get('/afficherMyProfile', function () {
 $app->get('/afficherProfile/:id', function ($id) {
     (new c\ControleurProfile())->afficherProfile($id);
 })->name('afficherProfile');
+$app->get('/listeMembres', function () {
+    (new v\MembresListeView())->renderFinal();
+})->name('afficherListe');
 
 $app->run();
 }
