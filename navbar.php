@@ -1,3 +1,6 @@
+<?php
+    $app = \Slim\Slim::getInstance();
+?>
 <header class="main-header">
     <!-- Logo -->
     <a href="/" class="logo">
@@ -34,13 +37,14 @@ else
                echo '<p>Pas connecté</p>';
 }
 ?> 
-               <a href="Deconnexion.php"><i class="fa fa-circle text-success"></i> Se déconnecter</a>
+               <a href="/Deconnexion.php"><i class="fa fa-circle text-success"></i> Se déconnecter</a>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Navigation</li>
             <li><a href="/index.php"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
+            <li><a href="/index.php/listeMembres"><i class="fa fa-users"></i> <span>Membres</span></a></li>
             <li class="header">Espace personnel</li>
             <li><a href="/index.php/afficherMyProfile"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
             <li><a href="/index.php/createListe"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>

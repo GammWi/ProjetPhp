@@ -15,11 +15,12 @@ use wishlist\views as v;
 
 class ControleurProfile
 {
+
     /*
      * fonction permettant un profile
      */
-    public function afficherProfile($userId) {
-        $user = m\User::where('id', '=', $userId)->first();
+    public function afficherMonProfile() {
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
         (new v\MyProfileView($user))->renderFinal();
     }
 }

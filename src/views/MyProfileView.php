@@ -32,7 +32,7 @@ class MyProfileView extends AbstractView
 
           <div class="box box-danger">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="/dist/img/user2-160x160.jpg" alt="User profile picture">
 
               <h3 class="profile-username text-center">{$this->u->name}</h3>
 
@@ -40,7 +40,7 @@ class MyProfileView extends AbstractView
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Listes</b> (<a href="/index.php/userListes/{$this->u->id}">voir</a>) <a class="pull-right">{$this->u->listes->count('*')}</a>
+                  <b>Listes</b> <a class="pull-right">{$this->u->listes->count('*')}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Amis</b> <a class="pull-right">0</a>

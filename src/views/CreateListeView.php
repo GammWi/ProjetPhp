@@ -23,6 +23,8 @@ class CreateListeView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
+        $insertNewListe = $app->urlFor('insertNewListe');
         $html = <<<END
         <div class="box box-danger">
                 <div class="box-header with-border">
@@ -30,7 +32,7 @@ class CreateListeView extends AbstractView
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form action="/insertNewListe" method="post" class="form-horizontal">
+                <form action="$insertNewListe" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="titre" id="titre" class="col-sm-2 control-label">Nom de la liste</label>

@@ -22,12 +22,12 @@ class ControleurCreationListe
         (new v\CreateListeView())->renderFinal();
     }
 
-    public function creerListe($titre, $description, $userid){
+    public function creerListe($titre, $description, $userid) {
         $l = new m\Liste();
         $l->titre = $titre;
         $l->description = $description;
         $l->user_id = $userid;
         $l->save();
-        (new v\SingleListeView($l))->renderFinal();
+        return $l;
     }
 }
