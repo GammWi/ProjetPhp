@@ -39,7 +39,7 @@
 
     <form action="server.php" method="post">
       <div class="form-group has-feedback">
-        <input type="email" name="email" class="form-control" placeholder="Adresse mail">
+        <input type="email" name="email" required class="form-control" placeholder="Adresse mail">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

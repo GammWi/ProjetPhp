@@ -57,5 +57,5 @@ $app->run();
 }
 else
 {
-	header("Location:login.php?error=ntm");
+	header("Location:login.php");
 }
