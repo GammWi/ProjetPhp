@@ -40,7 +40,7 @@ END;
                 <td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
                 <td class="mailbox-name"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a></td>
                 <td class="mailbox-subject">{$liste->description}</td>
-                <td class="mailbox-subject">Créée par {$liste->user->name}</td>
+                <td class="mailbox-subject">Créée par {$liste->id}</td> <!-- ERREUR : pas d'objet user->name assocé au liste par défault donc slim crash  -->
             </tr>
 END;
         }

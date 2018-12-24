@@ -30,15 +30,18 @@ ini_set('display_errors', 1);
        		{
 		    $name = $donnee["name"];
 		    $id = $donnee[0];
-		    $email = $donee["email"];
+		    $email = $donnee["email"];
 		    $_SESSION['email']=$email;
-                    $_SESSION['name']=$name;
+                   // $_SESSION['name']=$name;
 		    $_SESSION['id']=$id;
-             	    header('location: index.php?oui=1');
+          //   	var_dump($donnee);
+	//	var_dump($_SESSION);   
+		header('location: index.php?oui=1');
                 }
                 else
                 {
-	    	   header("Location: login.php?error=2"); 
+		 // var_dump($_SESSION);
+	     	  header("Location: login.php?error=2"); 
                 } 
             }
        }
