@@ -14,36 +14,50 @@ ini_set('display_errors', 1);
     }
 
     if (isset($_POST['login'])) {
-       $checkUser = $bdd->prepare('Select * from user where email=?');
-       $email = htmlentities($_POST["email"]);
+	$login = $_POST["log"]; // a decontaminer
+	if(strpos($login,"@")===false)
+	{
+		// si pas @
+		$checkUser = $bdd->prepare('Select * from user where name=?');
+	}
+	else
+	{
+		// si @
+       		$checkUser = $bdd->prepare('Select * from user where email=?');
+      	}
+	$username = htmlentities($_POST["log"]);
        $password = htmlentities($_POST["password"]);
-       $checkUser->execute(array($email));
+       $checkUser->execute(array($username));
        $rows = $checkUser->rowCount();
        if($rows==1)
        {
-           $checkUser->execute(array($email));
-	   $rows = $checkUser->rowCount();
-           if($rows==1)
-            {
+          
                 $donnee=$checkUser->fetch();
                 if(password_verify($password,$donnee["password"]))
        		{
 		    $name = $donnee["name"];
 		    $id = $donnee[0];
+		    $email = $donnee["email"];
 		    $_SESSION['email']=$email;
                     $_SESSION['name']=$name;
 		    $_SESSION['id']=$id;
-             	    header('location: index.php');
+         //    	var_dump($donnee);
+	//	var_dump($_SESSION);   
+		header('location: index.php?oui=1');
                 }
                 else
                 {
-	    	   header("Location: login.php?error=2"); 
+		//var_dump($checkUser);
+		 // var_dump($_SESSION);
+	     	  header("Location: login.php?error=2"); 
                 } 
-            }
        }
        else
        {	
-	  header("Location: login.php?error=1");
+	//var_dump($checkUser);
+	//var_dump($_POST);
+	//echo $login;
+   	header("Location: login.php?error=1");
        }
     } else {
 	
@@ -71,12 +85,7 @@ ini_set('display_errors', 1);
            $addUser->execute(array($email, $name, $password));
 	   $_SESSION['email']=$email;
 	   $_SESSION['name']=$name;
-		$getId = $bdd->prepare('Select * from user where email=?');
-		$getId->execute(array($email));
-		$donnee=$getId->fetch();
-		$_SESSION['id']=$donnee[0];
 		header("Location:index.php");
-	//	var_dump($_SESSION);
        }
 	}
     }
