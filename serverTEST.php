@@ -57,7 +57,7 @@ ini_set('display_errors', 1);
 	//var_dump($checkUser);
 	//var_dump($_POST);
 	//echo $login;
-   	header("Location: loginTEST.php?error=1");
+   	header("Location: login.php?error=1");
        }
     } else {
 	
