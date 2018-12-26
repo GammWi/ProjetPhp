@@ -43,7 +43,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Navigation</li>
-            <li><a href="/index.php"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
+            <li><a href="/index.php/listes"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
             <li><a href="/index.php/listeMembres"><i class="fa fa-users"></i> <span>Membres</span></a></li>
             <li class="header">Espace personnel</li>
             <li><a href="/index.php/afficherMyProfile"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>

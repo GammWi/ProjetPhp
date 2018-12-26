@@ -15,6 +15,11 @@ use wishlist\views as v;
 
 class ControleurListe
 {
+
+    public function afficherToutesLesListes(){
+        (new v\AllListeView())->renderFinal();
+    }
+
     /*
      * fonction permettant d'afficher une liste
      */

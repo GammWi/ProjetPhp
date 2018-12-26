@@ -26,6 +26,9 @@ $app->get('/', function () {
     (new c\ControleurProfile())->afficherMonProfile();
 });
 
+$app->get('/listes', function () {
+    (new c\ControleurListe())->afficherToutesLesListes();
+})->name('afficherToutesLesListes');
 $app->get('/liste/:lid', function ($lid) {
     (new c\ControleurListe())->afficherListe($lid);
 })->name('afficherListe');
