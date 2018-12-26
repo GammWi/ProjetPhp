@@ -14,17 +14,24 @@ ini_set('display_errors', 1);
     }
 
     if (isset($_POST['login'])) {
-       $checkUser = $bdd->prepare('Select * from user where name=?');
-       $username = htmlentities($_POST["username"]);
+	$login = $_POST["log"]; // a decontaminer
+	if(strpos($login,"@")===false)
+	{
+		// si pas @
+		$checkUser = $bdd->prepare('Select * from user where name=?');
+	}
+	else
+	{
+		// si @
+       		$checkUser = $bdd->prepare('Select * from user where email=?');
+      	}
+	$username = htmlentities($_POST["log"]);
        $password = htmlentities($_POST["password"]);
        $checkUser->execute(array($username));
        $rows = $checkUser->rowCount();
        if($rows==1)
        {
-           $checkUser->execute(array($username));
-	   $rows = $checkUser->rowCount();
-           if($rows==1)
-            {
+          
                 $donnee=$checkUser->fetch();
                 if(password_verify($password,$donnee["password"]))
        		{
@@ -32,23 +39,25 @@ ini_set('display_errors', 1);
 		    $id = $donnee[0];
 		    $email = $donnee["email"];
 		    $_SESSION['email']=$email;
-                   // $_SESSION['name']=$name;
+                    $_SESSION['name']=$name;
 		    $_SESSION['id']=$id;
-          //   	var_dump($donnee);
+         //    	var_dump($donnee);
 	//	var_dump($_SESSION);   
 		header('location: index.php?oui=1');
                 }
                 else
                 {
+		//var_dump($checkUser);
 		 // var_dump($_SESSION);
 	     	  header("Location: login.php?error=2"); 
                 } 
-            }
        }
        else
        {	
 	//var_dump($checkUser);
-	 header("Location: login.php?error=1");
+	//var_dump($_POST);
+	//echo $login;
+   	header("Location: loginTEST.php?error=1");
        }
     } else {
 	
