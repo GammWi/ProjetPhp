@@ -14,21 +14,22 @@ use wishlist\views as v;
 class SingleListeView extends AbstractView
 {
 
-    private $l, $participants;
+    private $l, $participations;
 
     /**
      * ListeView constructor.
      */
     public function __construct(m\Liste $liste) {
         $this->l = $liste;
-        $this->participants = $this->l->participants();
         $this->viewName = $this->l->titre;
+        $this->participations = $this->l->participations;
         $this->viewDescription = "créée par " . $this->l->user->name;
     }
 
     public function render(){
         $app = \Slim\Slim::getInstance();
         $addItem = $app->urlFor('addItem');
+        $addParticipant = $app->urlFor('addParticipant');
 
         $html = <<<END
 <div class="row">
@@ -48,7 +49,7 @@ class SingleListeView extends AbstractView
             
              <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Participants ({$this->participants->count()})</h3>
+                  <h3 class="box-title">Participants ({$this->participations->count()})</h3>
 
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
@@ -59,12 +60,12 @@ class SingleListeView extends AbstractView
                 <div class="box-body no-padding">
                   <ul class="users-list clearfix">
 END;
-        foreach($this->participants as $participant){
+        foreach($this->participations as $participant){
             $html .= <<<END
 <li>
   <img src="/web/profile/default.jpg" alt="User Image">
-  <a class="users-list-name" href="#">{$participant->name}</a>
-  <span class="users-list-date"><a href="">Supprimer</a></span>
+  <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
+  <span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
 </li>
 END;
         }
@@ -75,6 +76,20 @@ END;
                   <span><i>Les participants peuvent éditer la liste</i></span>
                 </div>
               </div>
+              
+              <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Actions</h3>
+
+                  <div class="box-tools pull-right">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm">Renommer la liste</button>
+                      <button type="button" class="btn btn-default btn-sm">Supprimer la liste</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
         </div>
         <div class="col-md-8">
 END;
@@ -118,7 +133,7 @@ END;
                           <label>Image</label>
                           <input type="text" class="form-control" name="image" placeholder="Exemple : image.jpg">
                         </div>
-                        <input type="hidden" name="liste_id" value="{$this->l->no}"/> 
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -143,12 +158,13 @@ END;
                 <h4 class="modal-title">Ajouter un participant</h4>
               </div>
               <div class="modal-body">
-                <form action="" method="post" class="form-horizontal">
+                <form action="$addParticipant" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
                           <label>Adresse email du participant</label>
                           <input type="email" class="form-control" name="email" placeholder="participant@exemple.com">
                         </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">

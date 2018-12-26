@@ -12,6 +12,7 @@ require_once 'vendor/autoload.php';
 
 use wishlist\models as m;
 use wishlist\views as v;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class ControleurListe
 {
@@ -58,7 +59,7 @@ class ControleurListe
     }
 
     public function ajouterItem(){
-        $id = $_POST['liste_id'];
+        $id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $i = new m\Item();
         $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
         $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
@@ -67,7 +68,8 @@ class ControleurListe
         $i->liste_id = $id;
         $i->save();
 
-        $this->afficherListe($id);
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $id)));
     }
 
     public function supprimerItem($id){
@@ -75,7 +77,27 @@ class ControleurListe
         $liste_id = $i->liste_id;
         $i->delete();
 
-        $this->afficherListe($liste_id);
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
+    }
+
+    public function ajouterParticipant(){
+        $user = m\User::where('email', '=', filter_var($_POST['email'], FILTER_SANITIZE_EMAIL))->first();
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $p = new m\Participation();
+        $p->liste_id = $liste_id;
+        $p->user_id = $user->id;
+        $p->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
+    }
+
+    public function supprimerParticipant($liste_id, $user_id){
+        m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
     }
 
 }

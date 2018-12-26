@@ -63,6 +63,14 @@ $app->get('/deleteItem/:id', function ($id) {
     $l = (new c\ControleurListe())->supprimerItem($id);
 })->name('deleteItem');
 
+$app->post('/addParticipant', function () {
+    $l = (new c\ControleurListe())->ajouterParticipant();
+})->name('addParticipant');
+
+$app->get('/deleteParticipant/:lid/:uid', function ($lid, $uid) {
+    $l = (new c\ControleurListe())->supprimerParticipant($lid, $uid);
+})->name('deleteParticipant');
+
 $app->get('/afficherMyProfile', function () {
     (new c\ControleurProfile())->afficherMonProfile();
 })->name('afficherMyProfile');

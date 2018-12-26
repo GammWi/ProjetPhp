@@ -23,7 +23,7 @@ class Liste extends \Illuminate\Database\Eloquent\Model
         return $this->belongsTo('\wishlist\models\User','user_id');
     }
 
-    public function participants(){
-        return User::join('participants', 'user.id', '=', 'user_id')->where('liste_id', '=', $this->no)->get();
+    public function participations(){
+        return $this->hasMany('\wishlist\models\Participation', 'liste_id');
     }
 }
