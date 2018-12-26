@@ -14,31 +14,80 @@ use wishlist\views as v;
 class SingleListeView extends AbstractView
 {
 
-    private $l;
+    private $l, $participants;
 
     /**
      * ListeView constructor.
      */
     public function __construct(m\Liste $liste) {
         $this->l = $liste;
-        $this->viewName = "Liste : " . $this->l->titre;
+        $this->participants = $this->l->participants();
+        $this->viewName = $this->l->titre;
+        $this->viewDescription = "créée par " . $this->l->user->name;
     }
 
     public function render(){
         $app = \Slim\Slim::getInstance();
         $addItem = $app->urlFor('addItem');
 
-        $html = "";
-        foreach ($this->l->items as $item){
-            $iv = new v\ItemView($item);
-            $iv->render();
+        $html = <<<END
+<div class="row">
+        <div class="col-md-4">
+        
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
+                        Ajouter un item
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+             <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Participants ({$this->participants->count()})</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
+                        Ajouter un participant
+                    </button>
+                  </div>
+                </div>
+                <div class="box-body no-padding">
+                  <ul class="users-list clearfix">
+END;
+        foreach($this->participants as $participant){
+            $html .= <<<END
+<li>
+  <img src="/web/profile/default.jpg" alt="User Image">
+  <a class="users-list-name" href="#">{$participant->name}</a>
+  <span class="users-list-date"><a href="">Supprimer</a></span>
+</li>
+END;
         }
         $html .= <<<END
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-add-item">
-                    Ajouter un item
-                </button>
-                
-<div class="modal fade" id="modal-add-item">
+                  </ul>
+                </div>
+                <div class="box-footer text-center">
+                  <span><i>Les participants peuvent éditer la liste</i></span>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-8">
+END;
+
+        foreach ($this->l->items as $item){
+            $iv = new v\ItemView($item);
+            $html .= $iv->render();
+        }
+        $html .= <<<END
+    </div>
+</div>
+
+        <div class="modal fade" id="modal-add-item">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -66,6 +115,36 @@ class SingleListeView extends AbstractView
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="submit" class="btn btn-danger pull-right">Ajouter l'item</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+                
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+        <div class="modal fade" id="modal-add-participant">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Ajouter un participant</h4>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Adresse email du participant</label>
+                          <input type="email" class="form-control" name="email" placeholder="participant@exemple.com">
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Ajouter le participant</button>
                     </div>
                     <!-- /.box-footer -->
                 </form>

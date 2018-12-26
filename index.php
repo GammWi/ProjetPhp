@@ -26,13 +26,21 @@ $app->get('/', function () {
     (new c\ControleurProfile())->afficherMonProfile();
 });
 
+$app->get('/listes', function () {
+    (new c\ControleurListe())->afficherToutesLesListes();
+})->name('afficherToutesLesListes');
+
 $app->get('/liste/:lid', function ($lid) {
     (new c\ControleurListe())->afficherListe($lid);
 })->name('afficherListe');
 
+$app->get('/myListes', function () {
+    (new c\ControleurListe())->afficherListeUtilisateurActuel();
+})->name('afficherListesUserActuel');
+
 $app->get('/userListes/:userId', function ($userId) {
     (new c\ControleurListe())->afficherListeUtilisateur($userId);
-})->name('afficherListeUserId');
+})->name('afficherListesUserId');
 
 $app->get('/item/:id', function ($id) {
     (new c\ControleurItem())->afficherItem($id);
@@ -58,6 +66,7 @@ $app->get('/afficherMyProfile', function () {
 $app->get('/afficherProfile/:id', function ($id) {
     (new c\ControleurProfile())->afficherProfile($id);
 })->name('afficherProfile');
+
 $app->get('/listeMembres', function () {
     (new v\MembresListeView())->renderFinal();
 })->name('afficherMembres');
@@ -66,5 +75,5 @@ $app->run();
 }
 else
 {
-	header("Location:login.php?error=needLogin");
+	header("Location:/login.php?error=needLogin");
 }

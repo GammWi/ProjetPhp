@@ -15,6 +15,11 @@ use wishlist\views as v;
 
 class ControleurListe
 {
+
+    public function afficherToutesLesListes(){
+        (new v\AllListeView())->renderFinal();
+    }
+
     /*
      * fonction permettant d'afficher une liste
      */
@@ -30,6 +35,10 @@ class ControleurListe
     public function afficherListeUtilisateur($userId) {
         $user = m\User::where('id', '=', $userId)->first();
         (new v\UserListeView($user))->renderFinal();
+    }
+
+    public function afficherListeUtilisateurActuel(){
+        $this->afficherListeUtilisateur($_SESSION['id']);
     }
 
     /*

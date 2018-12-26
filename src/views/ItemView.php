@@ -23,7 +23,8 @@ class ItemView extends AbstractView
 
     public function render(){
         $html = <<<END
-<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">
+<!--<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">-->
+<div class="box box-widget widget-user-2">
     <div class="widget-user-header bg-red">
         <div class="widget-user-image">
             <img class="img-circle" src="/web/img/{$this->i->img}" alt="User Avatar">
@@ -38,7 +39,7 @@ class ItemView extends AbstractView
     </div>
 </div>
 END;
-        echo $html;
+        return $html;
     }
 
 }
