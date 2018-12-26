@@ -22,11 +22,11 @@ class ControleurCreationListe
         (new v\CreateListeView())->renderFinal();
     }
 
-    public function creerListe($titre, $description, $userid) {
+    public function creerListe() {
         $l = new m\Liste();
-        $l->titre = $titre;
-        $l->description = $description;
-        $l->user_id = $userid;
+        $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+        $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        $l->user_id = $_SESSION['id'];
         $l->save();
         return $l;
     }

@@ -40,7 +40,7 @@ class MyProfileView extends AbstractView
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Listes</b> <a class="pull-right">{$this->u->listes->count('*')}</a>
+                  <b>Listes</b> <a class="pull-right">-1</a>
                 </li>
                 <li class="list-group-item">
                   <b>Amis</b> <a class="pull-right">0</a>

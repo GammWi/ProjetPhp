@@ -42,10 +42,7 @@ $app->get('/createListe', function () {
 })->name('createListe');
 
 $app->post('/insertNewListe', function () {
-    $app = \Slim\Slim::getInstance();
-    $titre = $app->request->post('titre');
-    $desc = $app->request->post('description');
-	$l = (new c\ControleurCreationListe())->creerListe($titre,$desc,$_SESSION['id']);
+	$l = (new c\ControleurCreationListe())->creerListe();!
     (new v\SingleListeView($l))->renderFinal();
 })->name('insertNewListe');
 
@@ -58,11 +55,11 @@ $app->get('/afficherProfile/:id', function ($id) {
 })->name('afficherProfile');
 $app->get('/listeMembres', function () {
     (new v\MembresListeView())->renderFinal();
-})->name('afficherListe');
+})->name('afficherMembres');
 
 $app->run();
 }
 else
 {
-	header("Location:login.php?error=ntm");
+	header("Location:login.php?error=needLogin");
 }
