@@ -37,9 +37,9 @@
   <div class="login-box-body">
     <p class="login-box-msg">Connectez-vous ou créez un compte</p>
 
-    <form action="server.php" method="post">
+    <form action="serverTEST.php" method="post">
       <div class="form-group has-feedback">
-        <input type="email" name="email" required class="form-control" placeholder="Adresse mail">
+        <input name="username" required class="form-control" placeholder="Nom d'utilisateur">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
