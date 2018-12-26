@@ -39,7 +39,7 @@
 
     <form action="serverTEST.php" method="post">
       <div class="form-group has-feedback">
-        <input name="username" required class="form-control" placeholder="Nom d'utilisateur">
+        <input name="log" required class="form-control" placeholder="Nom d'utilisateur ou e-mail">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -81,7 +81,7 @@
               ?>
               <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-ban"></i> Adresse email inconnu </h4>
+                        <h4><i class="icon fa fa-ban"></i> Adresse email ou nom d'utilisateur inconnu </h4>
                       
               </div>
               <?php

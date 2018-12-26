@@ -22,7 +22,8 @@ $db->bootEloquent();
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    (new v\AllListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
+    //(new v\AllListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
+    (new c\ControleurProfile())->afficherMonProfile();
 });
 
 $app->get('/liste/:lid', function ($lid) {
