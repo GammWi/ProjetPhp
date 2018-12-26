@@ -38,13 +38,17 @@ $app->get('/item/:id', function ($id) {
 })->name('afficherItem');
 
 $app->get('/createListe', function () {
-    (new c\ControleurCreationListe())->afficherCreateurListe();
+    (new c\ControleurListe())->afficherCreateurListe();
 })->name('createListe');
 
 $app->post('/insertNewListe', function () {
-	$l = (new c\ControleurCreationListe())->creerListe();!
+	$l = (new c\ControleurListe())->creerListe();
     (new v\SingleListeView($l))->renderFinal();
 })->name('insertNewListe');
+
+$app->post('/addItem', function () {
+    $l = (new c\ControleurListe())->ajouterItem();
+})->name('addItem');
 
 $app->get('/afficherMyProfile', function () {
     (new c\ControleurProfile())->afficherMonProfile();

@@ -31,4 +31,32 @@ class ControleurListe
         $user = m\User::where('id', '=', $userId)->first();
         (new v\UserListeView($user))->renderFinal();
     }
+
+    /*
+     * fonction permettant d'afficher le créateur liste
+     */
+    public function afficherCreateurListe() {
+        (new v\CreateListeView())->renderFinal();
+    }
+
+    public function creerListe() {
+        $l = new m\Liste();
+        $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+        $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        $l->user_id = $_SESSION['id'];
+        $l->save();
+        return $l;
+    }
+
+    public function ajouterItem(){
+        $id = 1; //À REVOIR
+        $i = new m\Item();
+        $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
+        $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        $i->img = filter_var($_POST['image'], FILTER_SANITIZE_STRING);
+        $i->liste_id = $id; //À revoir
+        $i->save();
+
+        $this->afficherListe($id);
+    }
 }

@@ -13,13 +13,15 @@ use wishlist\models as m;
 class MembresListeView extends AbstractView
 {
 
-    private $u;
+    private $u,$l,$i;
 
     /**
      * ListeView constructor.
      */
     public function __construct() {
         $this->u = m\User::get();
+        $this->l = m\Liste::get();
+        $this->i = m\Item::get();
         $this->viewName = "Membres du site";
     }
 
@@ -60,6 +62,24 @@ END;
             </div>
             <div class="icon">
               <i class="fa fa-users"></i>
+            </div>
+          </div>
+          <div class="small-box bg-blue">
+            <div class="inner">
+              <h3>{$this->l->count()}</h3>
+              <p>Listes créées</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-list"></i>
+            </div>
+          </div>
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>{$this->i->count()}</h3>
+              <p>Items ajoutés</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-tag"></i>
             </div>
           </div>
     </div>
