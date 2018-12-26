@@ -22,4 +22,8 @@ class Liste extends \Illuminate\Database\Eloquent\Model
     public function user(){
         return $this->belongsTo('\wishlist\models\User','user_id');
     }
+
+    public function participants(){
+        return User::join('participants', 'user.id', '=', 'user_id')->where('liste_id', '=', $this->no)->get();
+    }
 }

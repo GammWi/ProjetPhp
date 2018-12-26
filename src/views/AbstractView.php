@@ -14,7 +14,7 @@ use wishlist\views as v;
 abstract class AbstractView
 {
 
-    protected $viewName;
+    protected $viewName, $viewDescription;
 
     public abstract function render();
 
@@ -81,6 +81,13 @@ END;
         <section class="content-header">
             <h1>
                 {$this->viewName}
+END;
+        if($this->viewDescription != null){
+            $html .= <<<END
+<small>{$this->viewDescription}</small>
+END;
+        }
+        $html .= <<<END
             </h1>
         </section>
 

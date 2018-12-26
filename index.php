@@ -65,5 +65,5 @@ $app->run();
 }
 else
 {
-	header("Location:login.php?error=needLogin");
+	header("Location:/login.php?error=needLogin");
 }
