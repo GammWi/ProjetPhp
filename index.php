@@ -59,6 +59,10 @@ $app->post('/addItem', function () {
     $l = (new c\ControleurListe())->ajouterItem();
 })->name('addItem');
 
+$app->get('/deleteItem/:id', function ($id) {
+    $l = (new c\ControleurListe())->supprimerItem($id);
+})->name('deleteItem');
+
 $app->get('/afficherMyProfile', function () {
     (new c\ControleurProfile())->afficherMonProfile();
 })->name('afficherMyProfile');

@@ -34,7 +34,7 @@ class ItemView extends AbstractView
     </div>
     <div class="box-footer no-padding">
         <ul class="nav nav-stacked">
-            <li><a href="#">Supprimer</a></li>
+            <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
         </ul>
     </div>
 </div>

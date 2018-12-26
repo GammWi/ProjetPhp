@@ -58,7 +58,7 @@ class ControleurListe
     }
 
     public function ajouterItem(){
-        $id = $_POST['liste_id']; //À REVOIR
+        $id = $_POST['liste_id'];
         $i = new m\Item();
         $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
         $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
@@ -69,4 +69,13 @@ class ControleurListe
 
         $this->afficherListe($id);
     }
+
+    public function supprimerItem($id){
+        $i = m\Item::where('id', '=', $id)->first();
+        $liste_id = $i->liste_id;
+        $i->delete();
+
+        $this->afficherListe($liste_id);
+    }
+
 }
