@@ -35,14 +35,14 @@ class CreateListeView extends AbstractView
                 <form action="$insertNewListe" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="titre" id="titre" class="col-sm-2 control-label">Nom de la liste</label>
+                            <label class="col-sm-2 control-label">Nom de la liste</label>
 
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="titre" placeholder="Nom">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+                            <label class="col-sm-2 control-label">Description</label>
 
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" placeholder="Description" name="description">

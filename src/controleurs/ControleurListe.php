@@ -58,12 +58,13 @@ class ControleurListe
     }
 
     public function ajouterItem(){
-        $id = 1; //À REVOIR
+        $id = $_POST['liste_id']; //À REVOIR
         $i = new m\Item();
         $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
         $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
         $i->img = filter_var($_POST['image'], FILTER_SANITIZE_STRING);
-        $i->liste_id = $id; //À revoir
+        $i->tarif = filter_var($_POST['prix'], FILTER_SANITIZE_NUMBER_FLOAT);
+        $i->liste_id = $id;
         $i->save();
 
         $this->afficherListe($id);

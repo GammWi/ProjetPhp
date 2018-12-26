@@ -100,17 +100,25 @@ END;
                 <form action="$addItem" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Nom de l'item</label>
+                          <label>Nom de l'item</label>
                           <input type="text" class="form-control" name="nom" placeholder="Nom">
                         </div>
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Description</label>
+                          <label>Description</label>
                           <input type="text" class="form-control" name="description" placeholder="Description">
                         </div>
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Image</label>
+                          <label>Prix</label>
+                          <div class="input-group">
+                            <input type="number" class="form-control" name="prix" placeholder="10">
+                            <span class="input-group-addon">€</span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label>Image</label>
                           <input type="text" class="form-control" name="image" placeholder="Exemple : image.jpg">
                         </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/> 
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -138,7 +146,7 @@ END;
                 <form action="" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Adresse email du participant</label>
+                          <label>Adresse email du participant</label>
                           <input type="email" class="form-control" name="email" placeholder="participant@exemple.com">
                         </div>
                     </div>
