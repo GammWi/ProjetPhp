@@ -71,6 +71,9 @@ END;
         $html .= <<<END
                   </ul>
                 </div>
+                <div class="box-footer text-center">
+                  <span><i>Les participants peuvent éditer la liste</i></span>
+                </div>
               </div>
         </div>
         <div class="col-md-8">

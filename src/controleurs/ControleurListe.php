@@ -37,6 +37,10 @@ class ControleurListe
         (new v\UserListeView($user))->renderFinal();
     }
 
+    public function afficherListeUtilisateurActuel(){
+        $this->afficherListeUtilisateur($_SESSION['id']);
+    }
+
     /*
      * fonction permettant d'afficher le créateur liste
      */

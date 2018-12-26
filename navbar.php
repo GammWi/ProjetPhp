@@ -48,7 +48,7 @@
             <li class="header">Espace personnel</li>
             <li><a href="/index.php/afficherMyProfile"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
             <li><a href="/index.php/createListe"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
-            <li><a href=""><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
+            <li><a href="/index.php/myListes"><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->
