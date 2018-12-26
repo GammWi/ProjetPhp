@@ -71,7 +71,12 @@ ini_set('display_errors', 1);
            $addUser->execute(array($email, $name, $password));
 	   $_SESSION['email']=$email;
 	   $_SESSION['name']=$name;
+		$getId = $bdd->prepare('Select * from user where email=?');
+		$getId->execute(array($email));
+		$donnee=$getId->fetch();
+		$_SESSION['id']=$donnee[0];
 		header("Location:index.php");
+	//	var_dump($_SESSION);
        }
 	}
     }
