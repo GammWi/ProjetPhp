@@ -87,8 +87,12 @@ $app->post('/suppressionDUneListe', function () {
 })->name('supprimerListe');
 
 $app->post('/updateProfileInfos', function () {
-    (new c\ControleurListe())->updateProfileInformations();
+    (new c\ControleurProfile())->updateProfileInformations();
 })->name('updateProfileInfos');
+
+$app->post('/updateProfilePhoto', function () {
+    (new c\ControleurProfile())->updateProfilePhoto();
+})->name('updateProfilePhoto');
 
 $app->get('/reserverItem/:id', function ($id) {
     (new c\ControleurItem())->reserverItem($id);

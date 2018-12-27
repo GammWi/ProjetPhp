@@ -137,24 +137,6 @@ class ControleurListe
         $app->redirect($app->urlFor('afficherToutesLesListes'));
     }
 
-    public function updateProfileInformations(){
-        //On recupere le profil
-        $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-        //On recupere la liste assosiciee
-        $profil = m\User::where('id', '=', $id)->first();
-        //PROTECTION PERMISSIONS
-        if($profil->id == $_SESSION['id']){
-            //On recupere le nouveau titre
-            $profil->name = filter_var($_POST['pseudonyme'], FILTER_SANITIZE_STRING);
-            $profil->email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-            $profil->statut = filter_var($_POST['statut'], FILTER_SANITIZE_STRING);
-            $profil->save();
-        }
-
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherProfile', ['id' => $profil->id]));
-    }
-
     public function ajouterItem(){
         //VERIFICATION DES PERMISSIONS DE L'UTILISATEUR
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
@@ -162,8 +144,8 @@ class ControleurListe
 
         //PROTECTION PERMISSIONS
         if($liste->user_id == $_SESSION['id'] || $this->estParticipant($liste, $_SESSION['id'])){
+
             //FICHIER DE L'IMAGE
-            $uploaded = false;
             $target_dir = "web/uploads/";
             $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
             $uploadOk = 1;
