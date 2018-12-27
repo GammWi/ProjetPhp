@@ -82,7 +82,7 @@ END;
                         <input type="hidden" name="item_id" value="{$this->i->id}"/>
                         <div class="form-group">
                           <label>Message pour le propriétaire</label>
-                          <input type="text" class="form-control" name="reservation_message" placeholder="Message pour le propriétaire" value="{$this->l->reservation_message}">
+                          <input type="text" class="form-control" name="reservation_message" placeholder="Message pour le propriétaire" value="{$this->i->reservation_message}">
                         </div>
                     </div>
                     <!-- /.box-body -->
