@@ -114,7 +114,7 @@ END;
               </div>
               <div class="modal-body">
                 
-                <form action="$addItem" method="post" class="form-horizontal">
+                <form action="$addItem" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="box-body">
                         <div class="form-group">
                           <label>Nom de l'item</label>
@@ -132,8 +132,9 @@ END;
                           </div>
                         </div>
                         <div class="form-group">
-                          <label>Image</label>
-                          <input type="text" class="form-control" name="image" placeholder="Exemple : image.jpg">
+                          <label for="exampleInputFile">Image</label>
+                          <input type="file" name="fileToUpload">
+                          <p class="help-block">Formats acceptés : PNG, JPG, JPEG</p>
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
