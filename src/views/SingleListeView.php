@@ -87,7 +87,7 @@ END;
         foreach($this->participations as $participant){
             $html .= <<<END
                 <li>
-                  <img src="/web/profile/default.jpg" alt="User Image">
+                  <img src="{$participant->user->img}" alt="User Image">
                   <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
 END;
             if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){

@@ -19,7 +19,6 @@ abstract class AbstractView
     public abstract function render();
 
     public function renderHeader(){
-
         $html = <<<END
         <head>
     <meta charset="utf-8">
@@ -67,6 +66,7 @@ END;
      * fonction qui permet d'afficher le corps
      */
     function renderBody(){
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
         $html = <<<END
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -94,7 +94,7 @@ END;
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="/web/profile/default.jpg" class="img-circle" alt="User Image">
+                <img src="{$user->img}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
 END;

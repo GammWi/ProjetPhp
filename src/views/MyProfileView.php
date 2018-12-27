@@ -28,6 +28,7 @@ class MyProfileView extends AbstractView
     public function render(){
         $app = \Slim\Slim::getInstance();
         $update = $app->urlFor('updateProfileInfos');
+        $updatePhoto = $app->urlFor('updateProfilePhoto');
 
         $html = <<<END
         <div class="row">
@@ -35,7 +36,7 @@ class MyProfileView extends AbstractView
 
           <div class="box box-danger">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="/dist/img/user2-160x160.jpg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="{$this->u->img}" alt="User profile picture">
 
               <h3 class="profile-username text-center">{$this->u->name}</h3>
 
@@ -56,8 +57,8 @@ class MyProfileView extends AbstractView
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active danger"><a href="#timeline" data-toggle="tab">Mes listes</a></li>
-              
-              <li><a href="#settings" data-toggle="tab">Paramètres</a></li>
+              <li><a href="#settings" data-toggle="tab">Informations du profil</a></li>
+              <li><a href="#photo" data-toggle="tab">Photo de profil</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="timeline">
@@ -94,6 +95,23 @@ END;
 
                     <div class="col-sm-10">
                       <input type="text" class="form-control" name="statut" placeholder="Écrivez un statut..." value="{$this->u->statut}">
+                    </div>
+                  </div>
+                  <input type="hidden" name="id" value="{$this->u->id}"/>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Mettre à jour</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="photo">
+                <form action="$updatePhoto" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 10px;">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Photo de profil</label>
+
+                    <div class="col-sm-10">
+                      <input type="file" name="fileToUpload">
                     </div>
                   </div>
                   <input type="hidden" name="id" value="{$this->u->id}"/>
