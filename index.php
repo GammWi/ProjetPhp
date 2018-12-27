@@ -90,8 +90,8 @@ $app->post('/updateProfileInfos', function () {
     (new c\ControleurListe())->updateProfileInformations();
 })->name('updateProfileInfos');
 
-$app->get('/reserverItem/:id', function ($id) {
-    (new c\ControleurItem())->reserverItem($id);
+$app->post('/reserverItem/:id', function () {
+    (new c\ControleurItem())->reserverItem();
 })->name('ReserverUnItem');
 
 $app->get('/annulerReservation/:id', function ($id) {

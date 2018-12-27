@@ -24,6 +24,8 @@ class ItemView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
+        $reservation = $app->urlFor('ReserverUnItem');
         $html = <<<END
 <!--<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">-->
 <div class="box box-widget widget-user-2">
@@ -42,15 +44,15 @@ END;
         if ($liste->user_id == $_SESSION['id'] || c\ControleurListe::estParticipant($liste, $_SESSION['id'])) {
             if ($this->i->reservation_user == $_SESSION['id']){
                 $html .= <<<END
-            <li><a href="/index.php/annulerReservation/{$this->i->id}">Annnuler la réservation</a></li>
+            <li><a href="/index.php/annulerReservation/{$this->i->id}">Vous avez réservé cet item, votre message : '<i>{$this->i->reservation_message}</i>' </br><b>Annnuler la réservation</b></a></li>
 END;
             } else if ( $this->i->reservation_user == null ) {
                 $html .= <<<END
-            <li><a href="/index.php/reserverItem/{$this->i->id}">Réserver cet item</a></li>
+            <li><a data-toggle="modal" data-target="#modal-reserver-item-{$this->i->id}">Réserver cet item</a></li>
 END;
             } else {
                 $html .= <<<END
-            <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
+            <li><a>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b>.</br>Son message : '<i>{$this->i->reservation_message}</i>'</a></li>
 END;
             }
             $html.= <<<END
@@ -65,6 +67,36 @@ END;
         </ul>
     </div>
 </div>
+ <!-- modal pour la reservation d'un item -->
+        <div class="modal fade" id="modal-reserver-item-{$this->i->id}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Réserver un item : {$this->i->nom}</h4>
+              </div>
+              <div class="modal-body">
+                <form action="$reservation" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <input type="hidden" name="item_id" value="{$this->i->id}"/>
+                        <div class="form-group">
+                          <label>Message pour le propriétaire</label>
+                          <input type="text" class="form-control" name="reservation_message" placeholder="Message pour le propriétaire" value="{$this->l->reservation_message}">
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Réserver un item</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
 END;
         return $html;
     }

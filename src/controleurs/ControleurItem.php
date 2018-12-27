@@ -28,11 +28,15 @@ class ControleurItem
     /**
      * Fonction permettant de reserver un item, seulement si on est proprietaire de la liste ou participant a la liste
      */
-    function reserverItem($id){
-        $item =  m\Item::where('id', '=', $id)->first();
-        $liste = $item->liste;
+    function reserverItem(){
+        $itemId = filter_var($_POST['item_id'], FILTER_SANITIZE_NUMBER_INT);
+        $item =  m\Item::where('id', '=', $itemId)->first();
+        //$liste = $item->liste;
+        $liste = m\Liste::where('no', '=', $item->liste_id)->first();
         if ($liste->user_id == $_SESSION['id'] || ControleurListe::estParticipant($liste, $_SESSION['id'])) {
+            $message = filter_var($_POST['reservation_message'],FILTER_SANITIZE_STRING);
             $item->reservation_user = $_SESSION['id'];
+            $item->reservation_message = $message;
             $item->save();
         }
 

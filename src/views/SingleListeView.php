@@ -251,7 +251,7 @@ END;
           </div>
           <!-- /.modal-dialog -->
         </div>
-
+        
         <!-- modal pour la suppression d'une liste -->
         <div class="modal fade" id="modal-supprimer-liste">
           <div class="modal-dialog">
