@@ -115,10 +115,12 @@ END;
                 <div class="box-header with-border">
                   <h3 class="box-title">Actions</h3>
 
-                  <div class="box-tools pull-right">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
-                      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
+                  <div class="box-body no-padding">
+                    <div class="box-body">
+                      <button type="button" class="btn btn-success btn-block btn-sm" data-toggle="modal" data-target="#modal-publier-liste">Rendre publique</button>
+                      <button type="button" class="btn btn-danger btn-block btn-sm" data-toggle="modal" data-target="#modal-privatiser-liste">Rendre privée</button>
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
                     </div>
                   </div>
                 </div>
@@ -283,6 +285,65 @@ END;
           </div>
           <!-- /.modal-dialog -->
         </div>
+        
+        <!-- modal pour rendre publique une liste -->
+        <div class="modal fade" id="modal-publier-liste">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Publier la liste</h4>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="callout callout-danger">
+                            <h4>Attention !</h4>
+            
+                            <p>Vous vous apprétez à rendre cette liste publique. Tous les utilisateurs du site pourront la consulter. Voulez vous continuer ?</p>
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-success pull-right">Rendre cette liste publique</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- modal pour rendre publique une liste -->
+        <div class="modal fade" id="modal-privatiser-liste">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Privatiser la liste</h4>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="callout callout-danger">
+                            <h4>Attention !</h4>
+            
+                            <p>Vous vous apprétez à rendre cette liste privée. Les utilisateurs du site qui ne font pas partie de la liste des participants ne pourront plus voir la liste. Voulez vous continuer ?</p>
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Rendre cette liste privée</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
 END;
         echo $html;
     }
