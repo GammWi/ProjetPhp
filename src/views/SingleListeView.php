@@ -183,6 +183,7 @@ END;
           <!-- /.modal-dialog -->
         </div>
         
+        <!-- modal pour le renommage d'une liste -->
         <div class="modal fade" id="modal-rename-liste">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -199,6 +200,10 @@ END;
                           <input type="text" class="form-control" name="titre" placeholder="Nom de la liste" value="{$this->l->titre}">
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                        <div class="form-group">
+                          <label>Description de la liste</label>
+                          <input type="text" class="form-control" name="description" placeholder="Description de la liste" value="{$this->l->description}">
+                        </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -213,6 +218,7 @@ END;
           <!-- /.modal-dialog -->
         </div>
 
+        <!-- modal pour la suppression d'une liste -->
         <div class="modal fade" id="modal-supprimer-liste">
           <div class="modal-dialog">
             <div class="modal-content">
