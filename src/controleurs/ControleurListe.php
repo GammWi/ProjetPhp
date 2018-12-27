@@ -12,7 +12,6 @@ require_once 'vendor/autoload.php';
 
 use wishlist\models as m;
 use wishlist\views as v;
-use Illuminate\Database\Capsule\Manager as DB;
 
 class ControleurListe
 {
@@ -55,7 +54,7 @@ class ControleurListe
         $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
         $l->user_id = $_SESSION['id'];
         $l->save();
-        return $l;
+        (new v\SingleListeView($l))->renderFinal();
     }
 
     public function supprimerItem($id){
@@ -136,4 +135,16 @@ class ControleurListe
         $app->redirect($app->urlFor('afficherListe', array('lid' => $id)));
     }
 
+    public function renommerUneListe(){
+        //On recupere l'id de la liste
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        //On recupere la liste assosiciee
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+        //On recupere le nouveau titre
+        $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+        $liste->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
+    }
 }

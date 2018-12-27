@@ -22,7 +22,6 @@ $db->bootEloquent();
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    //(new v\AllListeView(m\Liste::where('no', '=', 1)->first()))->renderFinal();
     (new c\ControleurProfile())->afficherMonProfile();
 });
 
@@ -51,24 +50,23 @@ $app->get('/createListe', function () {
 })->name('createListe');
 
 $app->post('/insertNewListe', function () {
-	$l = (new c\ControleurListe())->creerListe();
-    (new v\SingleListeView($l))->renderFinal();
+	(new c\ControleurListe())->creerListe();
 })->name('insertNewListe');
 
 $app->post('/addItem', function () {
-    $l = (new c\ControleurListe())->ajouterItem();
+    (new c\ControleurListe())->ajouterItem();
 })->name('addItem');
 
 $app->get('/deleteItem/:id', function ($id) {
-    $l = (new c\ControleurListe())->supprimerItem($id);
+    (new c\ControleurListe())->supprimerItem($id);
 })->name('deleteItem');
 
 $app->post('/addParticipant', function () {
-    $l = (new c\ControleurListe())->ajouterParticipant();
+    (new c\ControleurListe())->ajouterParticipant();
 })->name('addParticipant');
 
 $app->get('/deleteParticipant/:lid/:uid', function ($lid, $uid) {
-    $l = (new c\ControleurListe())->supprimerParticipant($lid, $uid);
+    (new c\ControleurListe())->supprimerParticipant($lid, $uid);
 })->name('deleteParticipant');
 
 $app->get('/afficherMyProfile', function () {
@@ -82,6 +80,10 @@ $app->get('/afficherProfile/:id', function ($id) {
 $app->get('/listeMembres', function () {
     (new v\MembresListeView())->renderFinal();
 })->name('afficherMembres');
+
+$app->post('/renommerLaListe', function () {
+    (new c\ControleurListe())->renommerUneListe();
+})->name('renommerLaListe');
 
 $app->run();
 }
