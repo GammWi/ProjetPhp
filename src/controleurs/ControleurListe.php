@@ -126,52 +126,62 @@ class ControleurListe
     }
 
     public function ajouterItem(){
-        //FICHIER DE L'IMAGE
-        $uploaded = false;
-        $target_dir = "web/uploads/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-        //Verification du type de fichier (image)
-        if(isset($_POST["submit"])) {
-            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-            if($check !== false) {
-                $uploadOk = 1;
-            } else {
-                $uploadOk = 0;
+        //VERIFICATION DES PERMISSIONS DE L'UTILISATEUR
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+        $estParticipant = false;
+        foreach($liste->participations as $participation){
+            if($participation->user->id == $_SESSION['id']){
+                $estParticipant = true;
             }
         }
-        //Vérification de la taille du fichier
-        if ($_FILES["fileToUpload"]["size"] > 500000) {
-            $uploadOk = 0;
-        }
-        //Vérification du format du fichier
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-            $uploadOk = 0;
-        }
-        //Si toutes les vérifications sont bonnes
-        if ($uploadOk != 0) {
-            //AJOUT DE L'ITEM POUR OBTENIR L'ID
-            $id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
-            $i = new m\Item();
-            $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
-            $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-            $i->tarif = filter_var($_POST['prix'], FILTER_SANITIZE_NUMBER_FLOAT);
-            $i->liste_id = $id;
-            $i->save();
+        if($liste->user_id == $_SESSION['id'] || $estParticipant){
+            //FICHIER DE L'IMAGE
+            $uploaded = false;
+            $target_dir = "web/uploads/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-            //Verification de l'upload de l'image
-            $target_file = $target_dir . "item" . $i->id . "." . $imageFileType;
-            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                $i->img = "/" . $target_file;
+            //Verification du type de fichier (image)
+            if(isset($_POST["submit"])) {
+                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+                if($check !== false) {
+                    $uploadOk = 1;
+                } else {
+                    $uploadOk = 0;
+                }
+            }
+            //Vérification de la taille du fichier
+            if ($_FILES["fileToUpload"]["size"] > 500000) {
+                $uploadOk = 0;
+            }
+            //Vérification du format du fichier
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                $uploadOk = 0;
+            }
+            //Si toutes les vérifications sont bonnes
+            if ($uploadOk != 0) {
+                //AJOUT DE L'ITEM POUR OBTENIR L'ID
+                $i = new m\Item();
+                $i->nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
+                $i->descr = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+                $i->tarif = filter_var($_POST['prix'], FILTER_SANITIZE_NUMBER_FLOAT);
+                $i->liste_id = $liste_id;
                 $i->save();
-            } else {
-                $i->delete();
+
+                //Verification de l'upload de l'image
+                $target_file = $target_dir . "item" . $i->id . "." . $imageFileType;
+                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                    $i->img = "/" . $target_file;
+                    $i->save();
+                } else {
+                    $i->delete();
+                }
             }
         }
 
         $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', array('lid' => $id)));
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
     }
 }
