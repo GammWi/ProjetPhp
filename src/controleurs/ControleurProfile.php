@@ -23,4 +23,9 @@ class ControleurProfile
         $user = m\User::where('id', '=', $_SESSION['id'])->first();
         (new v\MyProfileView($user))->renderFinal();
     }
+
+    public function afficherProfile($id) {
+        $user = m\User::where('id', '=', $id)->first();
+        (new v\MyProfileView($user))->renderFinal();
+    }
 }
