@@ -26,6 +26,9 @@ class MyProfileView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
+        $update = $app->urlFor('updateProfileInfos');
+
         $html = <<<END
         <div class="row">
         <div class="col-md-3">
@@ -71,12 +74,12 @@ END;
               </div>
 
               <div class="tab-pane" id="settings">
-                <form class="form-horizontal">
+                <form action="$update" method="post" class="form-horizontal">
                   <div class="form-group">
                     <label class="col-sm-2 control-label">Pseudonyme</label>
 
                     <div class="col-sm-10">
-                      <input type="email" class="form-control" name="pseudonyme" placeholder="Pseudonyme" value="{$this->u->name}">
+                      <input type="text" class="form-control" name="pseudonyme" placeholder="Pseudonyme" value="{$this->u->name}">
                     </div>
                   </div>
                   <div class="form-group">
@@ -86,6 +89,14 @@ END;
                       <input type="email" class="form-control" name="email" placeholder="Email" value="{$this->u->email}">
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Statut</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" name="statut" placeholder="Écrivez un statut..." value="{$this->u->statut}">
+                    </div>
+                  </div>
+                  <input type="hidden" name="id" value="{$this->u->id}"/>
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                       <button type="submit" class="btn btn-danger">Mettre à jour</button>

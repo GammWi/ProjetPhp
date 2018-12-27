@@ -89,6 +89,10 @@ $app->post('/suppressionDUneListe', function () {
     (new c\ControleurListe())->supprimerUneListe();
 })->name('supprimerListe');
 
+$app->post('/updateProfileInfos', function () {
+    (new c\ControleurListe())->updateProfileInformations();
+})->name('updateProfileInfos');
+
 $app->run();
 }
 else
