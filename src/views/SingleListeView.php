@@ -73,7 +73,13 @@ END;
 <li>
   <img src="/web/profile/default.jpg" alt="User Image">
   <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
-  <span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
+END;
+            if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
+                $html .= <<<END
+<span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
+END;
+            }
+            $html .= <<<END
 </li>
 END;
         }
