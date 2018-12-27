@@ -31,6 +31,7 @@ class SingleListeView extends AbstractView
         $addItem = $app->urlFor('addItem');
         $addParticipant = $app->urlFor('addParticipant');
         $nouveauTitre = $app->urlFor('renommerLaListe');
+        $suppresionListe = $app->urlFor('supprimerListe');
 
         $html = <<<END
 <div class="row">
@@ -85,7 +86,7 @@ END;
                   <div class="box-tools pull-right">
                     <div class="btn-group">
                       <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
-                      <button type="button" class="btn btn-default btn-sm">Supprimer la liste</button>
+                      <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
                     </div>
                   </div>
                 </div>
@@ -202,6 +203,37 @@ END;
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="submit" class="btn btn-danger pull-right">Renommer la liste</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+        <div class="modal fade" id="modal-supprimer-liste">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Supprimer la liste</h4>
+              </div>
+              <div class="modal-body">
+                <form action="$suppresionListe" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="callout callout-danger">
+                            <h4>Attention !</h4>
+            
+                            <p>Vous vous apprétez à supprimer une liste, <b>{$this->l->items()->count()} item(s)</b> sera/seront alors supprimé(s). Voulez vous continuer ?</p>
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Supprimer la liste</button>
                     </div>
                     <!-- /.box-footer -->
                 </form>
