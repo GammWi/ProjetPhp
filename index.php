@@ -41,10 +41,6 @@ $app->get('/userListes/:userId', function ($userId) {
     (new c\ControleurListe())->afficherListeUtilisateur($userId);
 })->name('afficherListesUserId');
 
-$app->get('/item/:id', function ($id) {
-    (new c\ControleurItem())->afficherItem($id);
-})->name('afficherItem');
-
 $app->get('/createListe', function () {
     (new c\ControleurListe())->afficherCreateurListe();
 })->name('createListe');
@@ -78,6 +74,7 @@ $app->get('/afficherProfile/:id', function ($id) {
 })->name('afficherProfile');
 
 $app->get('/listeMembres', function () {
+    //TODO
     (new v\MembresListeView())->renderFinal();
 })->name('afficherMembres');
 
@@ -92,6 +89,14 @@ $app->post('/suppressionDUneListe', function () {
 $app->post('/updateProfileInfos', function () {
     (new c\ControleurListe())->updateProfileInformations();
 })->name('updateProfileInfos');
+
+$app->get('/reserverItem/:id', function ($id) {
+    (new c\ControleurItem())->reserverItem($id);
+})->name('ReserverUnItem');
+
+$app->get('/annulerReservation/:id', function ($id) {
+    (new c\ControleurItem())->annulerReservation($id);
+})->name('AnnulerUneReservation');
 
 $app->run();
 }

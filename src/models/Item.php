@@ -18,4 +18,8 @@ class Item extends \Illuminate\Database\Eloquent\Model
     public function liste(){
         return $this->belongsTo('\wishlist\models\Liste','liste_id');
     }
+
+    public function reservationUser(){
+        return $this->belongsTo('\wishlist\models\User', 'reservation_user');
+    }
 }

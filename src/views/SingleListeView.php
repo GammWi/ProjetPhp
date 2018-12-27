@@ -11,6 +11,10 @@ namespace wishlist\views;
 use wishlist\models as m;
 use wishlist\views as v;
 
+/**
+ * Class SingleListeView
+ * @package wishlist\views
+ */
 class SingleListeView extends AbstractView
 {
 

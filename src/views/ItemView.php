@@ -34,6 +34,23 @@ class ItemView extends AbstractView
     </div>
     <div class="box-footer no-padding">
         <ul class="nav nav-stacked">
+END;
+
+        if ($this->i->reservation_user == $_SESSION['id']){
+            $html .= <<<END
+            <li><a href="/index.php/annulerReservation/{$this->i->id}">Annnuler la réservation</a></li>
+END;
+        } else if ( $this->i->reservation_user == null ) {
+            $html .= <<<END
+            <li><a href="/reserverItem/{$this->i->id}">Réserver cet item</a></li>
+END;
+        } else {
+            $html .= <<<END
+            <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
+END;
+        }
+
+        $html .= <<<END
             <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
         </ul>
     </div>
