@@ -52,12 +52,18 @@ class SingleListeView extends AbstractView
              <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Participants ({$this->participations->count()})</h3>
-
-                  <div class="box-tools pull-right">
+END;
+        if($this->l->user_id == $_SESSION['id']) {
+            $html .= <<<END
+                <div class="box-tools pull-right">
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
                         Ajouter un participant
                     </button>
                   </div>
+END;
+
+        }
+        $html .= <<<END
                 </div>
                 <div class="box-body no-padding">
                   <ul class="users-list clearfix">
@@ -79,6 +85,10 @@ END;
                 </div>
               </div>
               
+END;
+        if($this->l->user_id == $_SESSION['id']) {
+            $html .= <<<END
+            
               <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Actions</h3>
@@ -91,7 +101,9 @@ END;
                   </div>
                 </div>
               </div>
-              
+END;
+        }
+        $html .= <<<END
         </div>
         <div class="col-md-8">
 END;
