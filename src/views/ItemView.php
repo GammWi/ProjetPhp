@@ -8,6 +8,8 @@
 
 namespace wishlist\views;
 
+use wishlist\controleurs as c;
+
 class ItemView extends AbstractView
 {
 
@@ -36,22 +38,30 @@ class ItemView extends AbstractView
         <ul class="nav nav-stacked">
 END;
 
-        if ($this->i->reservation_user == $_SESSION['id']){
-            $html .= <<<END
+        $liste = $this->i->liste;
+        if ($liste->user_id == $_SESSION['id'] || c\ControleurListe::estParticipant($liste, $_SESSION['id'])) {
+            if ($this->i->reservation_user == $_SESSION['id']){
+                $html .= <<<END
             <li><a href="/index.php/annulerReservation/{$this->i->id}">Annnuler la réservation</a></li>
 END;
-        } else if ( $this->i->reservation_user == null ) {
-            $html .= <<<END
-            <li><a href="/reserverItem/{$this->i->id}">Réserver cet item</a></li>
+            } else if ( $this->i->reservation_user == null ) {
+                $html .= <<<END
+            <li><a href="/index.php/reserverItem/{$this->i->id}">Réserver cet item</a></li>
 END;
-        } else {
+            } else {
+                $html .= <<<END
+            <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
+END;
+            }
+            $html.= <<<END
+            <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
+END;
+        } else if ($this->i->reservation_user != null){
             $html .= <<<END
             <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
 END;
         }
-
         $html .= <<<END
-            <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
         </ul>
     </div>
 </div>
