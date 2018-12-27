@@ -85,6 +85,10 @@ $app->post('/renommerLaListe', function () {
     (new c\ControleurListe())->renommerUneListe();
 })->name('renommerLaListe');
 
+$app->post('/suppressionDUneListe', function () {
+    (new c\ControleurListe())->supprimerUneListe();
+})->name('supprimerListe');
+
 $app->run();
 }
 else

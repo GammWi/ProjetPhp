@@ -111,4 +111,14 @@ class ControleurListe
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
     }
+
+    public function supprimerUneListe(){
+        //On recupere l'id de la liste
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        //On recupere la liste assosiciee
+        m\Liste::where('no', '=', $liste_id)->delete();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherToutesLesListes'));
+    }
 }
