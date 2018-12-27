@@ -81,6 +81,10 @@ $app->get('/listeMembres', function () {
     (new v\MembresListeView())->renderFinal();
 })->name('afficherMembres');
 
+$app->post('/renommerLaListe', function () {
+    (new c\ControleurListe())->renommerUneListe();
+})->name('renommerLaListe');
+
 $app->run();
 }
 else
