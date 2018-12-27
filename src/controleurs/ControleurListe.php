@@ -71,18 +71,28 @@ class ControleurListe
     public function ajouterParticipant(){
         $user = m\User::where('email', '=', filter_var($_POST['email'], FILTER_SANITIZE_EMAIL))->first();
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
-        $p = new m\Participation();
-        $p->liste_id = $liste_id;
-        $p->user_id = $user->id;
-        $p->save();
 
+        $l = m\Liste::where("no", "=", $liste_id)->first();
+        if ($l->user_id == $_SESSION["id"]) {
+            $p = new m\Participation();
+            $p->liste_id = $liste_id;
+            $p->user_id = $user->id;
+            $p->save();
+        }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
     }
 
+    /**
+     * Fonction permettant de supprimer un participant d'une liste, cela est possible seulement si l'utilisateur est celui qui a créé la liste
+     * @param $liste_id
+     * @param $user_id
+     */
     public function supprimerParticipant($liste_id, $user_id){
-        m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
-
+        $l = m\Liste::where("no", "=", $liste_id)->first();
+        if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"]) {
+            m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
+        }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
     }
