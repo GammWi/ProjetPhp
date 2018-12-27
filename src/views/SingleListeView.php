@@ -23,11 +23,12 @@ class SingleListeView extends AbstractView
     /**
      * ListeView constructor.
      */
-    public function __construct(m\Liste $liste) {
+    public function __construct(m\Liste $liste, $alertMessage = null) {
         $this->l = $liste;
         $this->viewName = $this->l->titre;
         $this->participations = $this->l->participations;
         $this->viewDescription = "créée par " . $this->l->user->name;
+        $this->alertMessage = $alertMessage;
     }
 
     public function render(){
@@ -38,18 +39,29 @@ class SingleListeView extends AbstractView
         $suppresionListe = $app->urlFor('supprimerListe');
 
         $html = <<<END
-<div class="row">
+    <div class="row">
         <div class="col-md-4">
         
             <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
-
+END;
+        $estParticipant = false;
+        foreach($this->participations as $participation){
+            if($participation->user->id == $_SESSION['id']){
+                $estParticipant = true;
+            }
+        }
+        if($_SESSION['id'] == $this->l->user_id || $estParticipant) {
+            $html .= <<<END
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
                         Ajouter un item
                     </button>
                   </div>
+END;
+        }
+        $html .= <<<END
                 </div>
               </div>
             
@@ -74,17 +86,17 @@ END;
 END;
         foreach($this->participations as $participant){
             $html .= <<<END
-<li>
-  <img src="/web/profile/default.jpg" alt="User Image">
-  <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
+                <li>
+                  <img src="/web/profile/default.jpg" alt="User Image">
+                  <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
 END;
             if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
                 $html .= <<<END
-<span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
+                <span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
 END;
             }
             $html .= <<<END
-</li>
+                </li>
 END;
         }
         $html .= <<<END
