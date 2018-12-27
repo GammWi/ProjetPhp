@@ -19,11 +19,12 @@ class SingleListeView extends AbstractView
     /**
      * ListeView constructor.
      */
-    public function __construct(m\Liste $liste) {
+    public function __construct(m\Liste $liste, $alertMessage = null) {
         $this->l = $liste;
         $this->viewName = $this->l->titre;
         $this->participations = $this->l->participations;
         $this->viewDescription = "créée par " . $this->l->user->name;
+        $this->alertMessage = $alertMessage;
     }
 
     public function render(){

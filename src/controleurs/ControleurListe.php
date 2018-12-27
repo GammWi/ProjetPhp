@@ -49,20 +49,27 @@ class ControleurListe
     }
 
     public function creerListe() {
-        $l = new m\Liste();
-        $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
-        $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-        $l->user_id = $_SESSION['id'];
-        $l->save();
+        //VERIFICATION DE LA CONNEXION
+        if(!empty($_SESSION)){
+            $l = new m\Liste();
+            $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+            $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+            $l->user_id = $_SESSION['id'];
+            $l->save();
 
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', array('lid' => $l->no)));
+            $app = \Slim\Slim::getInstance();
+            $app->redirect($app->urlFor('afficherListe', array('lid' => $l->no)));
+        }
     }
 
     public function supprimerItem($id){
         $i = m\Item::where('id', '=', $id)->first();
+        $liste = $i->liste;
         $liste_id = $i->liste_id;
-        $i->delete();
+        //PROTECTION PERMISSIONS
+        if($liste->user_id == $_SESSION['id'] || $this->estParticipant($liste, $_SESSION['id'])){
+            $i->delete();
+        }
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
@@ -73,6 +80,7 @@ class ControleurListe
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
 
         $l = m\Liste::where("no", "=", $liste_id)->first();
+        //PROTECTION PERMISSIONS
         if ($l->user_id == $_SESSION["id"]) {
             $p = new m\Participation();
             $p->liste_id = $liste_id;
@@ -90,6 +98,7 @@ class ControleurListe
      */
     public function supprimerParticipant($liste_id, $user_id){
         $l = m\Liste::where("no", "=", $liste_id)->first();
+        //PROTECTION PERMISSIONS
         if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"]) {
             m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
         }
@@ -103,8 +112,12 @@ class ControleurListe
         //On recupere la liste assosiciee
         $liste = m\Liste::where('no', '=', $liste_id)->first();
         //On recupere le nouveau titre
-        $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
-        $liste->save();
+        //PROTECTION PERMISSIONS
+        if ($liste->user_id == $_SESSION["id"]) {
+            $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+            $liste->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+            $liste->save();
+        }
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
@@ -114,7 +127,11 @@ class ControleurListe
         //On recupere l'id de la liste
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         //On recupere la liste assosiciee
-        m\Liste::where('no', '=', $liste_id)->delete();
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+        //PROTECTION PERMISSIONS
+        if ($liste->user_id == $_SESSION["id"]) {
+            $liste->delete();
+        }
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherToutesLesListes'));
@@ -125,11 +142,14 @@ class ControleurListe
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
         //On recupere la liste assosiciee
         $profil = m\User::where('id', '=', $id)->first();
-        //On recupere le nouveau titre
-        $profil->name = filter_var($_POST['pseudonyme'], FILTER_SANITIZE_STRING);
-        $profil->email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-        $profil->statut = filter_var($_POST['statut'], FILTER_SANITIZE_STRING);
-        $profil->save();
+        //PROTECTION PERMISSIONS
+        if($profil->id == $_SESSION['id']){
+            //On recupere le nouveau titre
+            $profil->name = filter_var($_POST['pseudonyme'], FILTER_SANITIZE_STRING);
+            $profil->email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+            $profil->statut = filter_var($_POST['statut'], FILTER_SANITIZE_STRING);
+            $profil->save();
+        }
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherProfile', ['id' => $profil->id]));
@@ -139,13 +159,9 @@ class ControleurListe
         //VERIFICATION DES PERMISSIONS DE L'UTILISATEUR
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $liste_id)->first();
-        $estParticipant = false;
-        foreach($liste->participations as $participation){
-            if($participation->user->id == $_SESSION['id']){
-                $estParticipant = true;
-            }
-        }
-        if($liste->user_id == $_SESSION['id'] || $estParticipant){
+
+        //PROTECTION PERMISSIONS
+        if($liste->user_id == $_SESSION['id'] || $this->estParticipant($liste, $_SESSION['id'])){
             //FICHIER DE L'IMAGE
             $uploaded = false;
             $target_dir = "web/uploads/";
@@ -193,5 +209,15 @@ class ControleurListe
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
+    }
+
+    public static function estParticipant(m\Liste $liste, $user_id) {
+        $estParticipant = false;
+        foreach($liste->participations as $participation){
+            if($participation->user->id == $user_id){
+                $estParticipant = true;
+            }
+        }
+        return $estParticipant;
     }
 }

@@ -14,7 +14,7 @@ use wishlist\views as v;
 abstract class AbstractView
 {
 
-    protected $viewName, $viewDescription;
+    protected $viewName, $viewDescription, $alertMessage;
 
     public abstract function render();
 
@@ -143,6 +143,15 @@ END;
             <!--CONTENU-->
 
 END;
+        if($this->alertMessage != null){
+            $html .= <<<END
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> Attention !</h4>
+                {$this->alertMessage}
+              </div>
+END;
+        }
         echo $html;
         $this->render();
         $html = <<<END
