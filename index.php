@@ -92,12 +92,11 @@ $app->post('/updateProfileInfos', function () {
 
 $app->post('/reserverItem/:id', function () {
     (new c\ControleurItem())->reserverItem();
+})->name('ReserverUnItem');
 
 $app->post('/updateProfilePhoto', function () {
     (new c\ControleurProfile())->updateProfilePhoto();
 })->name('updateProfilePhoto');
-
-})->name('ReserverUnItem');
 
 $app->get('/annulerReservation/:id', function ($id) {
     (new c\ControleurItem())->annulerReservation($id);
