@@ -27,7 +27,7 @@ class ItemView extends AbstractView
 <div class="box box-widget widget-user-2">
     <div class="widget-user-header bg-red">
         <div class="widget-user-image">
-            <img class="img-circle" src="/web/img/{$this->i->img}" alt="User Avatar">
+            <img class="img-circle" src="{$this->i->img}" alt="User Avatar">
         </div>
         <h3 class="widget-user-username">{$this->i->nom} ({$this->i->tarif} €)</h3>
         <h5 class="widget-user-desc">{$this->i->descr}</h5>
