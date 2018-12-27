@@ -85,6 +85,19 @@ class ControleurListe
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
     }
 
+    public function renommerUneListe(){
+        //On recupere l'id de la liste
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        //On recupere la liste assosiciee
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+        //On recupere le nouveau titre
+        $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+        $liste->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
+    }
+
     public function ajouterItem(){
         //FICHIER DE L'IMAGE
         $uploaded = false;
@@ -133,18 +146,5 @@ class ControleurListe
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $id)));
-    }
-
-    public function renommerUneListe(){
-        //On recupere l'id de la liste
-        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
-        //On recupere la liste assosiciee
-        $liste = m\Liste::where('no', '=', $liste_id)->first();
-        //On recupere le nouveau titre
-        $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
-        $liste->save();
-
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
     }
 }
