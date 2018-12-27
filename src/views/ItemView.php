@@ -46,7 +46,7 @@ END;
 END;
             } else if ( $this->i->reservation_user == null ) {
                 $html .= <<<END
-            <li><a href="/reserverItem/{$this->i->id}">Réserver cet item</a></li>
+            <li><a href="/index.php/reserverItem/{$this->i->id}">Réserver cet item</a></li>
 END;
             } else {
                 $html .= <<<END
