@@ -106,6 +106,13 @@ $app->post('/nouveauMessageListe', function () {
     (new c\ControleurListe())->nouveauMessageListe();
 })->name('nouveauMessageListe');
 
+$app->post('/rendrePublique', function () {
+    (new c\ControleurListe())->rendrePublique();
+})->name('rendrePublique');
+
+$app->post('/rendrePrivee', function () {
+    (new c\ControleurListe())->rendrePrivee();
+})->name('rendrePrivee');
 $app->run();
 }
 else

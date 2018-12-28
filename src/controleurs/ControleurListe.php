@@ -233,4 +233,32 @@ class ControleurListe
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
     }
+
+    /**
+     * Methode permettant de rendre la liste cournate publique
+     */
+    public function rendrePublique(){
+        $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+        if ($liste->user_id == $_SESSION['id']){
+            $liste->publique = 1;
+            $liste->save();
+        }
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
+
+    /**
+     * Methode permettant de rendre la liste privee
+     */
+    public function rendrePrivee(){
+        $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+        if ($liste->user_id == $_SESSION['id']){
+            $liste->publique = 0;
+            $liste->save();
+        }
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
 }

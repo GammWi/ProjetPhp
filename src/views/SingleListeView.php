@@ -37,6 +37,8 @@ class SingleListeView extends AbstractView
         $addParticipant = $app->urlFor('addParticipant');
         $nouveauTitre = $app->urlFor('renommerLaListe');
         $suppresionListe = $app->urlFor('supprimerListe');
+        $rendrePublique = $app->urlFor('rendrePublique');
+        $rendrePrive = $app->urlFor('rendrePrivee');
 
         $html = <<<END
     <div class="row">
@@ -112,8 +114,17 @@ END;
 
                   <div class="box-body no-padding">
                     <div class="box-body">
+END;
+            if($this->l->publique == 0){
+                $html .= <<<END
                       <button type="button" class="btn btn-success btn-block btn-sm" data-toggle="modal" data-target="#modal-publier-liste">Rendre publique</button>
+END;
+            } else {
+                $html .= <<<END
                       <button type="button" class="btn btn-danger btn-block btn-sm" data-toggle="modal" data-target="#modal-privatiser-liste">Rendre privée</button>
+END;
+            }
+            $html .= <<<END
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
                     </div>
@@ -312,7 +323,7 @@ END;
                 <h4 class="modal-title">Publier la liste</h4>
               </div>
               <div class="modal-body">
-                <form action="" method="post" class="form-horizontal">
+                <form action="$rendrePublique" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="callout callout-danger">
                             <h4>Attention !</h4>
@@ -341,7 +352,7 @@ END;
                 <h4 class="modal-title">Privatiser la liste</h4>
               </div>
               <div class="modal-body">
-                <form action="" method="post" class="form-horizontal">
+                <form action="$rendrePrive" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="callout callout-danger">
                             <h4>Attention !</h4>
