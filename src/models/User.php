@@ -18,4 +18,14 @@ class User extends \Illuminate\Database\Eloquent\Model
     public function listes(){
         return $this->hasMany('\wishlist\models\Liste','user_id');
     }
+
+    public function estParticipant($liste) {
+        $estParticipant = false;
+        foreach($liste->participations as $participation){
+            if($participation->user->id == $this->id){
+                $estParticipant = true;
+            }
+        }
+        return $estParticipant;
+    }
 }

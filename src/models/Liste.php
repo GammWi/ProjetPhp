@@ -26,4 +26,12 @@ class Liste extends \Illuminate\Database\Eloquent\Model
     public function participations(){
         return $this->hasMany('\wishlist\models\Participation', 'liste_id');
     }
+
+    public function peutAcceder(User $u){
+        $res = false;
+        if ($u == $this->user || $u->estParticipant($this)){
+            $res = true;
+        }
+        return $res;
+    }
 }

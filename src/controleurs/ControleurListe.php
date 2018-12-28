@@ -16,12 +16,19 @@ use wishlist\views as v;
 class ControleurListe
 {
 
+    /**
+     * Fonction permettant d'afficher toutes les listes que l'utilisateur de la session peut voir
+     */
     public function afficherToutesLesListes(){
-        (new v\AllListeView())->renderFinal();
+        $userId = $_SESSION['id'];
+        $user = m\User::where('id', '=', $userId)->first();
+        $listes = $user->liste;
+        $l2 = m\Liste::get();
+        (new v\MultiplesListesView($listes))->renderFinal();
     }
 
-    /*
-     * fonction permettant d'afficher une liste
+    /**
+     * Fonction permettant d'afficher une liste
      */
     public function afficherListe($lid) {
         $listeid = $lid;
@@ -29,20 +36,27 @@ class ControleurListe
         (new v\SingleListeView($liste))->renderFinal();
     }
 
-    /*
-     * fonction permettant d'afficher les listes d'un utilisateur
+    /**
+     * Fonction permettant d'afficher les listes d'un utilisateur
      */
     public function afficherListeUtilisateur($userId) {
+        $userIdRegarder = $_SESSION['id'];
         $user = m\User::where('id', '=', $userId)->first();
-        (new v\UserListeView($user))->renderFinal();
+        $listes = $user->liste;
+        $listesAffichables = array();
+        foreach($listes as $l){
+            if($l->peutAcceder($userIdRegarder)){
+                $listesAffichables[] = $l;
+            }
+        }
     }
 
     public function afficherListeUtilisateurActuel(){
         $this->afficherListeUtilisateur($_SESSION['id']);
     }
 
-    /*
-     * fonction permettant d'afficher le créateur liste
+    /**
+     * Fonction permettant d'afficher le créateur liste
      */
     public function afficherCreateurListe() {
         (new v\CreateListeView())->renderFinal();
@@ -66,8 +80,9 @@ class ControleurListe
         $i = m\Item::where('id', '=', $id)->first();
         $liste = $i->liste;
         $liste_id = $i->liste_id;
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
         //PROTECTION PERMISSIONS
-        if($liste->user_id == $_SESSION['id'] || $this->estParticipant($liste, $_SESSION['id'])){
+        if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
             $i->delete();
         }
 
@@ -142,8 +157,9 @@ class ControleurListe
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $liste_id)->first();
 
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
         //PROTECTION PERMISSIONS
-        if($liste->user_id == $_SESSION['id'] || $this->estParticipant($liste, $_SESSION['id'])){
+        if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
 
             //FICHIER DE L'IMAGE
             $target_dir = "web/uploads/";
@@ -191,15 +207,5 @@ class ControleurListe
 
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
-    }
-
-    public static function estParticipant(m\Liste $liste, $user_id) {
-        $estParticipant = false;
-        foreach($liste->participations as $participation){
-            if($participation->user->id == $user_id){
-                $estParticipant = true;
-            }
-        }
-        return $estParticipant;
     }
 }

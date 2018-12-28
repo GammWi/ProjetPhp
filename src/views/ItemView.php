@@ -9,10 +9,10 @@
 namespace wishlist\views;
 
 use wishlist\controleurs as c;
+use wishlist\models as m;
 
 class ItemView extends AbstractView
 {
-
     private $i;
 
     /**
@@ -41,7 +41,8 @@ class ItemView extends AbstractView
 END;
 
         $liste = $this->i->liste;
-        if ($liste->user_id == $_SESSION['id'] || c\ControleurListe::estParticipant($liste, $_SESSION['id'])) {
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
+        if ($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)) {
             if ($this->i->reservation_user == $_SESSION['id']){
                 $html .= <<<END
             <li><a href="/index.php/annulerReservation/{$this->i->id}">Vous avez réservé cet item, votre message : '<i>{$this->i->reservation_message}</i>' </br><b>Annnuler la réservation</b></a></li>
@@ -100,5 +101,4 @@ END;
 END;
         return $html;
     }
-
 }

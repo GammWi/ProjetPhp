@@ -46,13 +46,8 @@ class SingleListeView extends AbstractView
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
 END;
-        $estParticipant = false;
-        foreach($this->participations as $participation){
-            if($participation->user->id == $_SESSION['id']){
-                $estParticipant = true;
-            }
-        }
-        if($_SESSION['id'] == $this->l->user_id || $estParticipant) {
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
+        if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
             $html .= <<<END
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
@@ -315,7 +310,7 @@ END;
           </div>
         </div>
         
-        <!-- modal pour rendre publique une liste -->
+        <!-- modal pour rendre une liste privée -->
         <div class="modal fade" id="modal-privatiser-liste">
           <div class="modal-dialog">
             <div class="modal-content">
