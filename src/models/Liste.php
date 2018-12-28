@@ -33,7 +33,7 @@ class Liste extends \Illuminate\Database\Eloquent\Model
 
     public function peutAcceder(User $u){
         $res = false;
-        if ($u == $this->user || $u->estParticipant($this)){
+        if ($u == $this->user || $u->estParticipant($this) || $this->publique == 1){
             $res = true;
         }
         return $res;

@@ -24,7 +24,10 @@ class ErreurView extends AbstractView
 
     public function render(){
         $html = <<<END
-            <p><b>ERREUR :</b> {$this->message}</p>
+            <p>{$this->message}</p>
+            <a type="button" class="btn btn-danger btn-sm" href="/index.php">
+                Retourner à l'accueil
+            </a>
 END;
         echo $html;
     }
