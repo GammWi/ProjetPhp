@@ -33,7 +33,8 @@ class ControleurItem
         $item =  m\Item::where('id', '=', $itemId)->first();
         //$liste = $item->liste;
         $liste = m\Liste::where('no', '=', $item->liste_id)->first();
-        if ($liste->user_id == $_SESSION['id'] || ControleurListe::estParticipant($liste, $_SESSION['id'])) {
+        $user = m\User::where('id', '=', $_SESSION['id'])->first();
+        if ($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)) {
             $message = filter_var($_POST['reservation_message'],FILTER_SANITIZE_STRING);
             $item->reservation_user = $_SESSION['id'];
             $item->reservation_message = $message;

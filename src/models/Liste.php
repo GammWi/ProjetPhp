@@ -30,4 +30,12 @@ class Liste extends \Illuminate\Database\Eloquent\Model
     public function messages(){
         return $this->hasMany('\wishlist\models\Message', 'liste_id')->orderBy('created_at');
     }
+
+    public function peutAcceder(User $u){
+        $res = false;
+        if ($u == $this->user || $u->estParticipant($this)){
+            $res = true;
+        }
+        return $res;
+    }
 }

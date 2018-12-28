@@ -26,4 +26,14 @@ class User extends \Illuminate\Database\Eloquent\Model
     public function messages(){
         return $this->hasMany('\wishlist\models\Message', 'user_id')->orderBy('created_at');
     }
+
+    public function estParticipant($liste) {
+        $estParticipant = false;
+        foreach($liste->participations as $participation){
+            if($participation->user->id == $this->id){
+                $estParticipant = true;
+            }
+        }
+        return $estParticipant;
+    }
 }
