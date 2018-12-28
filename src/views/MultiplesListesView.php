@@ -15,18 +15,18 @@ namespace wishlist\views;
 class MultiplesListesView extends AbstractView
 {
 
-    private $listes = array();
+    private $listes;
 
-    public function _Construct($l){
+    public function __construct($l, $viewName = "Listes"){
         $this->listes = $l;
-        $this->viewName = "Vue pour de multiples listes";
+        $this->viewName = $viewName;
     }
 
     public function render(){
         $html = <<<END
         <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Vue pour de multiples listes</h3>
+                    <h3 class="box-title">Listes</h3>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive mailbox-messages">

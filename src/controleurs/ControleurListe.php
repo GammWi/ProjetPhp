@@ -22,18 +22,29 @@ class ControleurListe
     public function afficherToutesLesListes(){
         $userId = $_SESSION['id'];
         $user = m\User::where('id', '=', $userId)->first();
-        $listes = $user->liste;
-        $l2 = m\Liste::get();
-        (new v\MultiplesListesView($listes))->renderFinal();
+        $listes = m\Liste::get();
+        $listesAffichables = array();
+        foreach($listes as $l) {
+            if ($l->peutAcceder($user)) {
+                $listesAffichables[] = $l;
+            }
+        }
+        (new v\MultiplesListesView($listesAffichables, "Toutes les listes"))->renderFinal();
     }
 
     /**
      * Fonction permettant d'afficher une liste
      */
     public function afficherListe($lid) {
+        $userId = $_SESSION['id'];
+        $user = m\User::where('id', '=', $userId)->first();
         $listeid = $lid;
         $liste = m\Liste::where('no', '=', $listeid)->first();
-        (new v\SingleListeView($liste))->renderFinal();
+        if ($liste->peutAcceder($user)){
+            (new v\SingleListeView($liste))->renderFinal();
+        } else {
+            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste"))->renderFinal();
+        }
     }
 
     /**
@@ -42,13 +53,16 @@ class ControleurListe
     public function afficherListeUtilisateur($userId) {
         $userIdRegarder = $_SESSION['id'];
         $user = m\User::where('id', '=', $userId)->first();
-        $listes = $user->liste;
+        $userRegarder = m\User::where('id', '=', $userIdRegarder)->first();
+        $listes = $user->listes;
         $listesAffichables = array();
         foreach($listes as $l){
-            if($l->peutAcceder($userIdRegarder)){
+            if($l->peutAcceder($userRegarder)){
                 $listesAffichables[] = $l;
             }
         }
+        $viewName = "Listes de $user->name";
+        (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
     }
 
     public function afficherListeUtilisateurActuel(){
