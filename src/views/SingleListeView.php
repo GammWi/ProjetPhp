@@ -37,6 +37,7 @@ class SingleListeView extends AbstractView
         $addParticipant = $app->urlFor('addParticipant');
         $nouveauTitre = $app->urlFor('renommerLaListe');
         $suppresionListe = $app->urlFor('supprimerListe');
+        $nouveauMessage = $app->urlFor('nouveauMessageListe');
 
         $html = <<<END
     <div class="row">
@@ -369,7 +370,7 @@ END;
                 <h4 class="modal-title">Privatiser la liste</h4>
               </div>
               <div class="modal-body">
-                <form action="" method="post" class="form-horizontal">
+                <form action="$nouveauMessage" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
                           <label>Message</label>

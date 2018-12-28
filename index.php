@@ -103,8 +103,12 @@ $app->get('/annulerReservation/:id', function ($id) {
 })->name('AnnulerUneReservation');
 
 $app->post('/nouveauMessageListe', function () {
-    (new c\ControleurListe())->nouveauMessageListe();
+    (new c\ControleurMessage())->nouveauMessageListe();
 })->name('nouveauMessageListe');
+
+$app->get('/supprimerMessage/:id', function ($id) {
+    (new c\ControleurMessage())->supprimerMessageListe($id);
+})->name('supprimerMessage');
 
 $app->run();
 }

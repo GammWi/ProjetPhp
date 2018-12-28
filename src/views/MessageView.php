@@ -32,7 +32,18 @@ class MessageView extends AbstractView
                         <span class="username">
                           <a>{$this->u->name}</a>
                         </span>
-                    <span class="description">{$this->m->created_at}</span>
+END;
+        if($this->m->user_id == $_SESSION['id']){
+            $html .= <<<END
+<span class="description">{$this->m->created_at} - <a href="/index.php/supprimerMessage/{$this->m->id}">Supprimer</a></span>
+END;
+        } else {
+            $html .= <<<END
+<span class="description">{$this->m->created_at}</span>
+END;
+
+        }
+        $html .= <<<END
                   </div>
                   <!-- /.user-block -->
                   <p>{$this->m->message}</p>

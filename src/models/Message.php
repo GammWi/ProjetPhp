@@ -7,12 +7,13 @@
  */
 
 namespace wishlist\models;
-
+use Carbon\Carbon;
 
 class Message extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'liste_message';
     protected $primaryKey = 'id';
+    public $timestamps = true;
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
