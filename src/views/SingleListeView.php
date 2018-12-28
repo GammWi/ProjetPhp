@@ -39,11 +39,13 @@ class SingleListeView extends AbstractView
         $suppresionListe = $app->urlFor('supprimerListe');
         $rendrePublique = $app->urlFor('rendrePublique');
         $rendrePrive = $app->urlFor('rendrePrivee');
+        $nouveauMessage = $app->urlFor('nouveauMessageListe');
+
 
         $html = <<<END
     <div class="row">
         <div class="col-md-4">
-        
+
             <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
@@ -61,7 +63,7 @@ END;
         $html .= <<<END
                 </div>
               </div>
-            
+
              <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Participants ({$this->participations->count()})</h3>
@@ -103,11 +105,11 @@ END;
                   <span><i>Les participants peuvent éditer la liste</i></span>
                 </div>
               </div>
-              
+
 END;
         if($this->l->user_id == $_SESSION['id']) {
             $html .= <<<END
-            
+
               <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Actions</h3>
@@ -134,7 +136,7 @@ END;
 END;
         }
         $html .= <<<END
-        
+
         </div>
         <div class="col-md-8">
             <div class="nav-tabs-custom">
@@ -176,7 +178,7 @@ END;
                 <h4 class="modal-title">Ajouter un item</h4>
               </div>
               <div class="modal-body">
-                
+
                 <form action="$addItem" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="box-body">
                         <div class="form-group">
@@ -207,7 +209,7 @@ END;
                     </div>
                     <!-- /.box-footer -->
                 </form>
-                
+
               </div>
             </div>
             <!-- /.modal-content -->
@@ -238,14 +240,14 @@ END;
                     </div>
                     <!-- /.box-footer -->
                 </form>
-                
+
               </div>
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
         </div>
-        
+
         <!-- modal pour le renommage d'une liste -->
         <div class="modal fade" id="modal-rename-liste">
           <div class="modal-dialog">
@@ -280,7 +282,7 @@ END;
           </div>
           <!-- /.modal-dialog -->
         </div>
-        
+
         <!-- modal pour la suppression d'une liste -->
         <div class="modal fade" id="modal-supprimer-liste">
           <div class="modal-dialog">
@@ -295,7 +297,7 @@ END;
                     <div class="box-body">
                         <div class="callout callout-danger">
                             <h4>Attention !</h4>
-            
+
                             <p>Vous vous apprétez à supprimer une liste, <b>{$this->l->items()->count()} item(s)</b> sera/seront alors supprimé(s). Voulez vous continuer ?</p>
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
@@ -312,7 +314,7 @@ END;
           </div>
           <!-- /.modal-dialog -->
         </div>
-        
+
         <!-- modal pour rendre publique une liste -->
         <div class="modal fade" id="modal-publier-liste">
           <div class="modal-dialog">
@@ -327,7 +329,7 @@ END;
                     <div class="box-body">
                         <div class="callout callout-danger">
                             <h4>Attention !</h4>
-            
+
                             <p>Vous vous apprétez à rendre cette liste publique. Tous les utilisateurs du site pourront la consulter. Voulez vous continuer ?</p>
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
@@ -341,7 +343,7 @@ END;
             </div>
           </div>
         </div>
-        
+
         <!-- modal pour rendre une liste privée -->
         <div class="modal fade" id="modal-privatiser-liste">
           <div class="modal-dialog">
@@ -356,7 +358,7 @@ END;
                     <div class="box-body">
                         <div class="callout callout-danger">
                             <h4>Attention !</h4>
-            
+
                             <p>Vous vous apprétez à rendre cette liste privée. Les utilisateurs du site qui ne font pas partie de la liste des participants ne pourront plus voir la liste. Voulez vous continuer ?</p>
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
@@ -369,7 +371,7 @@ END;
             </div>
           </div>
         </div>
-        
+
         <!-- modal pour envoyer un nouveau message -->
         <div class="modal fade" id="modal-nouveau-message">
           <div class="modal-dialog">
@@ -380,7 +382,7 @@ END;
                 <h4 class="modal-title">Privatiser la liste</h4>
               </div>
               <div class="modal-body">
-                <form action="" method="post" class="form-horizontal">
+                <form action="$nouveauMessage" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group">
                           <label>Message</label>

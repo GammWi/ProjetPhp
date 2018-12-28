@@ -166,17 +166,6 @@ class ControleurListe
         $app->redirect($app->urlFor('afficherToutesLesListes'));
     }
 
-    public function nouveauMessageListe(){
-        $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
-        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
-        $message = filter_var($_POST['message'], FILTER_SANITIZE_STRING);
-
-        $user = m\User::where('id', '=', $user_id)->first();
-        $liste = m\Liste::where('no', '=', $liste_id)->first();
-
-        //A terminer
-    }
-
     public function ajouterItem(){
         //VERIFICATION DES PERMISSIONS DE L'UTILISATEUR
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);

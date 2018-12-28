@@ -103,7 +103,7 @@ $app->get('/annulerReservation/:id', function ($id) {
 })->name('AnnulerUneReservation');
 
 $app->post('/nouveauMessageListe', function () {
-    (new c\ControleurListe())->nouveauMessageListe();
+    (new c\ControleurMessage())->nouveauMessageListe();
 })->name('nouveauMessageListe');
 
 $app->post('/rendrePublique', function () {
@@ -113,6 +113,11 @@ $app->post('/rendrePublique', function () {
 $app->post('/rendrePrivee', function () {
     (new c\ControleurListe())->rendrePrivee();
 })->name('rendrePrivee');
+
+$app->get('/supprimerMessage/:id', function ($id) {
+    (new c\ControleurMessage())->supprimerMessageListe($id);
+})->name('supprimerMessage');
+
 $app->run();
 }
 else
