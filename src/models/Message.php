@@ -7,7 +7,6 @@
  */
 
 namespace wishlist\models;
-use Carbon\Carbon;
 
 class Message extends \Illuminate\Database\Eloquent\Model
 {
