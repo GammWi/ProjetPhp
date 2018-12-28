@@ -128,8 +128,16 @@ END;
 END;
         }
         $html .= <<<END
+        
         </div>
         <div class="col-md-8">
+            <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active danger"><a href="#items" data-toggle="tab">Items</a></li>
+              <li><a href="#messages" data-toggle="tab">Messages</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="items">
 END;
 
         foreach ($this->l->items as $item){
@@ -137,8 +145,21 @@ END;
             $html .= $iv->render();
         }
         $html .= <<<END
+              </div>
+              <div class="tab-pane" id="messages">
+                <button class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-nouveau-message"><b>Nouveau message</b></button>
+                </br>
+END;
+        foreach ($this->l->messages as $message){
+            $mv = new v\MessageView($message);
+            $html .= $mv->render();
+        }
+        $html .= <<<END
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-</div>
 
         <div class="modal fade" id="modal-add-item">
           <div class="modal-dialog">
@@ -334,9 +355,36 @@ END;
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
-                    <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="submit" class="btn btn-danger pull-right">Rendre cette liste privée</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- modal pour envoyer un nouveau message -->
+        <div class="modal fade" id="modal-nouveau-message">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Privatiser la liste</h4>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                          <label>Message</label>
+                          <input type="text" class="form-control" name="message" placeholder="Écrivez votre message ici...">
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                        <input type="hidden" name="user_id" value="{$_SESSION['id']}"/>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Envoyer le message</button>
                     </div>
                 </form>
               </div>

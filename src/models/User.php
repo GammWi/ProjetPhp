@@ -18,4 +18,12 @@ class User extends \Illuminate\Database\Eloquent\Model
     public function listes(){
         return $this->hasMany('\wishlist\models\Liste','user_id');
     }
+
+    public function participations(){
+        return $this->hasMany('\wishlist\models\Participation', 'user_id');
+    }
+
+    public function messages(){
+        return $this->hasMany('\wishlist\models\Message', 'user_id')->orderBy('created_at');
+    }
 }

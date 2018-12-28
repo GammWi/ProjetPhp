@@ -102,6 +102,10 @@ $app->get('/annulerReservation/:id', function ($id) {
     (new c\ControleurItem())->annulerReservation($id);
 })->name('AnnulerUneReservation');
 
+$app->post('/nouveauMessageListe', function () {
+    (new c\ControleurListe())->nouveauMessageListe();
+})->name('nouveauMessageListe');
+
 $app->run();
 }
 else

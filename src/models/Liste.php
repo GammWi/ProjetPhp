@@ -26,4 +26,8 @@ class Liste extends \Illuminate\Database\Eloquent\Model
     public function participations(){
         return $this->hasMany('\wishlist\models\Participation', 'liste_id');
     }
+
+    public function messages(){
+        return $this->hasMany('\wishlist\models\Message', 'liste_id')->orderBy('created_at');
+    }
 }
