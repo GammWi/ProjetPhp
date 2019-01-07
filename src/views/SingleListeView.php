@@ -411,6 +411,9 @@ END;
           </div>
         </div>
 
+END;
+        if($connected){
+            $html .= <<<END
         <!-- modal pour envoyer un nouveau message -->
         <div class="modal fade" id="modal-nouveau-message">
           <div class="modal-dialog">
@@ -438,8 +441,9 @@ END;
             </div>
           </div>
         </div>
-
 END;
+        }
+
         echo $html;
     }
 
