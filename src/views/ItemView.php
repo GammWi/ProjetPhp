@@ -27,7 +27,7 @@ class ItemView extends AbstractView
         $app = \Slim\Slim::getInstance();
         $reservation = $app->urlFor('ReserverUnItem');
 
-        $connected = $_SESSION['id'];
+        $connected = isset($_SESSION['id']);
 
         $html = <<<END
 <!--<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">-->
