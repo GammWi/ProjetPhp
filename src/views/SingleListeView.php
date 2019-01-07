@@ -41,6 +41,7 @@ class SingleListeView extends AbstractView
         $rendrePrive = $app->urlFor('rendrePrivee');
         $nouveauMessage = $app->urlFor('nouveauMessageListe');
 
+        $connected = isset($_SESSION['id']);
 
         $html = <<<END
     <div class="row">
@@ -50,15 +51,17 @@ class SingleListeView extends AbstractView
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
 END;
-        $user = m\User::where('id', '=', $_SESSION['id'])->first();
-        if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
-            $html .= <<<END
+        if($connected){
+            $user = m\User::where('id', '=', $_SESSION['id'])->first();
+            if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
+                $html .= <<<END
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
                         Ajouter un item
                     </button>
                   </div>
 END;
+            }
         }
         $html .= <<<END
                 </div>

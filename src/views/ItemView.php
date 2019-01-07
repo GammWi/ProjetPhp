@@ -26,6 +26,9 @@ class ItemView extends AbstractView
     public function render(){
         $app = \Slim\Slim::getInstance();
         $reservation = $app->urlFor('ReserverUnItem');
+
+        $connected = $_SESSION['id'];
+
         $html = <<<END
 <!--<div class="box box-widget widget-user-2" style="float: left; width: 49%; min-height: 150px; margin-right: 1%;">-->
 <div class="box box-widget widget-user-2">
@@ -39,30 +42,37 @@ class ItemView extends AbstractView
     <div class="box-footer no-padding">
         <ul class="nav nav-stacked">
 END;
-
-        $liste = $this->i->liste;
-        $user = m\User::where('id', '=', $_SESSION['id'])->first();
-        if ($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)) {
-            if ($this->i->reservation_user == $_SESSION['id']){
-                $html .= <<<END
+        if($connected){
+            $liste = $this->i->liste;
+            $user = m\User::where('id', '=', $_SESSION['id'])->first();
+            if ($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)) {
+                if ($this->i->reservation_user == $_SESSION['id']){
+                    $html .= <<<END
             <li><a href="/index.php/annulerReservation/{$this->i->id}">Vous avez réservé cet item, votre message : '<i>{$this->i->reservation_message}</i>' </br><b>Annnuler la réservation</b></a></li>
 END;
-            } else if ( $this->i->reservation_user == null ) {
-                $html .= <<<END
+                } else if ( $this->i->reservation_user == null ) {
+                    $html .= <<<END
             <li><a data-toggle="modal" data-target="#modal-reserver-item-{$this->i->id}">Réserver cet item</a></li>
 END;
-            } else {
-                $html .= <<<END
+                } else {
+                    $html .= <<<END
             <li><a>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b>.</br>Son message : '<i>{$this->i->reservation_message}</i>'</a></li>
 END;
-            }
-            $html.= <<<END
+                }
+                $html.= <<<END
             <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
 END;
-        } else if ($this->i->reservation_user != null){
-            $html .= <<<END
+            } else if ($this->i->reservation_user != null){
+                $html .= <<<END
             <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
 END;
+            }
+        } else {
+            if($this->i->reservation_user != null){
+                $html .= <<<END
+            <li><a><i>Cet item est déjà réservé par <b>{$this->i->reservationUser->name}</b></i></a></li>
+END;
+            }
         }
         $html .= <<<END
         </ul>
