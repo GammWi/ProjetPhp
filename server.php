@@ -2,7 +2,8 @@
 session_start();
 
 ini_set('display_errors', 1);
-
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
     try
     {
         $bdd = new PDO('mysql:host=51.255.49.92:3306;dbname=wishlist;charset=utf8','roger','roger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
@@ -92,8 +93,13 @@ ini_set('display_errors', 1);
        {
 	   $addUser = $bdd->prepare('INSERT INTO `wishlist`.`user` ( `email`, `name`, `password`) VALUES (?, ?, ?)');
            $addUser->execute(array($email, $name, $password));
+		$getId = $bdd->prepare('select id from user where email=?');
+		$getId->execute(array($email));
+		$donnee = $getId->fetch();
+		$id = $donnee['id'];
 	   $_SESSION['email']=$email;
 	   $_SESSION['name']=$name;
+		$_SESSION['id']=$id;
 		header("Location:index.php");
        }
 	}
