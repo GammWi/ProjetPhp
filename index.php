@@ -6,7 +6,15 @@
 require_once 'vendor/autoload.php';
 
 session_start();
-
+if(isset($_COOKIE['rememberMe']))
+{
+	$rememberMe = unserialize($_COOKIE['rememberMe']);
+	$id = $rememberMe['id'];
+	$name = $rememberMe['name'];
+	$ip = $rememberMe['ip'];
+	$_SESSION['id']=$id;
+	$_SESSION['name']=$name;
+}
 use wishlist\controleurs as c;
 use wishlist\views as v;
 use wishlist\models as m;
@@ -122,5 +130,7 @@ $app->run();
 }
 else
 {
+//var_dump($_SESSION);
+//var_dump($rememberMe);
 	header("Location:/login.php?error=needLogin");
 }
