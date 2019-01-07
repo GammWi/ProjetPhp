@@ -71,8 +71,9 @@ END;
                 <div class="box-header with-border">
                   <h3 class="box-title">Participants ({$this->participations->count()})</h3>
 END;
-        if($this->l->user_id == $_SESSION['id']) {
-            $html .= <<<END
+        if($connected){
+            if($this->l->user_id == $_SESSION['id']) {
+                $html .= <<<END
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
                         Ajouter un participant
@@ -80,6 +81,7 @@ END;
                   </div>
 END;
 
+            }
         }
         $html .= <<<END
                 </div>
