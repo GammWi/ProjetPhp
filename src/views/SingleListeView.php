@@ -115,8 +115,9 @@ END;
               </div>
 
 END;
-        if($this->l->user_id == $_SESSION['id']) {
-            $html .= <<<END
+        if($connected){
+            if($this->l->user_id == $_SESSION['id']) {
+                $html .= <<<END
 
               <div class="box box-danger">
                 <div class="box-header with-border">
@@ -125,16 +126,16 @@ END;
                   <div class="box-body no-padding">
                     <div class="box-body">
 END;
-            if($this->l->publique == 0){
-                $html .= <<<END
+                if($this->l->publique == 0){
+                    $html .= <<<END
                       <button type="button" class="btn btn-success btn-block btn-sm" data-toggle="modal" data-target="#modal-publier-liste">Rendre publique</button>
 END;
-            } else {
-                $html .= <<<END
+                } else {
+                    $html .= <<<END
                       <button type="button" class="btn btn-danger btn-block btn-sm" data-toggle="modal" data-target="#modal-privatiser-liste">Rendre privée</button>
 END;
-            }
-            $html .= <<<END
+                }
+                $html .= <<<END
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
                     </div>
@@ -155,6 +156,7 @@ END;
                 </div>
               </div>
 END;
+            }
         }
         $html .= <<<END
 
