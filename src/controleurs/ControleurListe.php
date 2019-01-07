@@ -20,13 +20,21 @@ class ControleurListe
      * Fonction permettant d'afficher toutes les listes que l'utilisateur de la session peut voir
      */
     public function afficherToutesLesListes(){
-        $userId = $_SESSION['id'];
-        $user = m\User::where('id', '=', $userId)->first();
-        $listes = m\Liste::get();
         $listesAffichables = array();
-        foreach($listes as $l) {
-            if ($l->peutAcceder($user)) {
-                $listesAffichables[] = $l;
+        $listes = m\Liste::get();
+        if(isset($_SESSION['id'])){
+            $userId = $_SESSION['id'];
+            $user = m\User::where('id', '=', $userId)->first();
+            foreach($listes as $l) {
+                if ($l->peutAcceder($user)) {
+                    $listesAffichables[] = $l;
+                }
+            }
+        } else {
+            foreach($listes as $l) {
+                if ($l->publique == 1) {
+                    $listesAffichables[] = $l;
+                }
             }
         }
         (new v\MultiplesListesView($listesAffichables, "Toutes les listes"))->renderFinal();
@@ -36,14 +44,19 @@ class ControleurListe
      * Fonction permettant d'afficher une liste
      */
     public function afficherListe($lid) {
-        $userId = $_SESSION['id'];
-        $user = m\User::where('id', '=', $userId)->first();
         $listeid = $lid;
         $liste = m\Liste::where('no', '=', $listeid)->first();
-        if ($liste->peutAcceder($user)){
+        if(isset($_SESSION['id'])){
+            $userId = $_SESSION['id'];
+            $user = m\User::where('id', '=', $userId)->first();
+            $res = $liste->peutAcceder($user);
+        } else {
+            $res = $liste->publique;
+        }
+        if ($res){
             (new v\SingleListeView($liste))->renderFinal();
         } else {
-            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste"))->renderFinal();
+            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste (liste privée)"))->renderFinal();
         }
     }
 
@@ -125,7 +138,9 @@ class ControleurListe
      * @param $liste_id
      * @param $user_id
      */
-    public function supprimerParticipant($liste_id, $user_id){
+    public function supprimerParticipant($lid, $uid){
+        $liste_id = filter_var($lid, FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($uid, FILTER_SANITIZE_NUMBER_INT);
         $l = m\Liste::where("no", "=", $liste_id)->first();
         //PROTECTION PERMISSIONS
         if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"]) {

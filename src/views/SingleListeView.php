@@ -87,11 +87,12 @@ END;
             $html .= <<<END
                 <li>
                   <img src="{$participant->user->img}" alt="User Image">
-                  <a class="users-list-name" href="/index.php/userListes/{$participant->user->id}">{$participant->user->name}</a>
+                  <a class="users-list-name" href="{$app->urlFor('afficherListesUserId', array('userId' => $participant->user->id))}">{$participant->user->name}</a>
 END;
             if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
                 $html .= <<<END
-                <span class="users-list-date"><a href="/index.php/deleteParticipant/{$this->l->no}/{$participant->user->id}">Supprimer</a></span>
+                <span class="users-list-date"><a href="{$app->urlFor('deleteParticipant', array('lid' => $this->l->no, 'uid' => $participant->user->id))}">Supprimer</a></span>
+                <span 
 END;
             }
             $html .= <<<END
@@ -129,6 +130,19 @@ END;
             $html .= <<<END
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Destinataire : <b>Aucun</b></h3>
+
+                  <div class="box-body no-padding">
+                    <div class="box-body">
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Modifier le destinataire</button>
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer le destinataire</button>
                     </div>
                   </div>
                 </div>
