@@ -159,7 +159,15 @@ END;
             <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active danger"><a href="#items" data-toggle="tab">Items</a></li>
+END;
+        if($connected) {
+            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
+                $html .= <<<END
               <li><a href="#messages" data-toggle="tab">Messages</a></li>
+END;
+            }
+        }
+        $html .= <<<END
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="items">
@@ -171,16 +179,24 @@ END;
         }
         $html .= <<<END
               </div>
+END;
+        if($connected) {
+            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
+                $html .= <<<END
               <div class="tab-pane" id="messages">
                 <button class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-nouveau-message"><b>Nouveau message</b></button>
                 </br>
 END;
-        foreach ($this->l->messages as $message){
-            $mv = new v\MessageView($message);
-            $html .= $mv->render();
+                foreach ($this->l->messages as $message) {
+                    $mv = new v\MessageView($message);
+                    $html .= $mv->render();
+                }
+                $html .= <<<END
+              </div>
+END;
+            }
         }
         $html .= <<<END
-              </div>
             </div>
           </div>
         </div>
