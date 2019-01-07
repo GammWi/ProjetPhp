@@ -27,8 +27,8 @@ $db->bootEloquent();
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    (new c\ControleurProfile())->afficherMonProfile();
-});
+    (new c\ControleurListe())->afficherToutesLesListes();
+})->name('home');
 
 $app->get('/listes', function () {
     (new c\ControleurListe())->afficherToutesLesListes();
