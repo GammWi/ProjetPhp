@@ -91,6 +91,11 @@
         }
       ?>
     </form>
+      <div class="social-auth-links text-center">
+          <p>- OU -</p>
+          <a href="login.php" class="btn btn-primary btn-block btn-flat btn-sm">Se connecter</a>
+      </div>
+      <a href="index.php" class="text-center"><i class="icon fa fa-home"></i> Retour au site</a>
   </div>
   <!-- /.form-box -->
 </div>
