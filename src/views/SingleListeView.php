@@ -94,11 +94,13 @@ END;
                   <img src="{$participant->user->img}" alt="User Image">
                   <a class="users-list-name" href="{$app->urlFor('afficherListesUserId', array('userId' => $participant->user->id))}">{$participant->user->name}</a>
 END;
-            if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
-                $html .= <<<END
+            if($connected){
+                if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
+                    $html .= <<<END
                 <span class="users-list-date"><a href="{$app->urlFor('deleteParticipant', array('lid' => $this->l->no, 'uid' => $participant->user->id))}">Supprimer</a></span>
                 <span 
 END;
+                }
             }
             $html .= <<<END
                 </li>
