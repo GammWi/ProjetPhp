@@ -66,7 +66,10 @@ END;
      * fonction qui permet d'afficher le corps
      */
     function renderBody(){
-        $user = m\User::where('id', '=', $_SESSION['id'])->first();
+        $connected = isset($_SESSION['id']);
+        if($connected){
+            $user = m\User::where('id', '=', $_SESSION['id'])->first();
+        }
         $html = <<<END
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -92,30 +95,48 @@ END;
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
+END;
+        if(!$connected){
+            $html .= <<<END
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/web/defaultProfile.jpg" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>Visiteur</p>
+            <a href="/Login.php"><i class="fa fa-circle text-success"></i> Se connecter</a>
+            </div>
+        </div>
+END;
+        } else {
+            $html .= <<<END
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="{$user->img}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-END;
-        if(!empty($_SESSION)){
-            $html .= "<p>" . m\User::where('id', '=', $_SESSION['id'])->first()->name . "</p>";
-        } else {
-            $html .= "<p>" . m\User::where('id', '=', $_SESSION['id'])->first()->name . "</p>";
-        }
-        $html .= <<<END
-            <a href="/Deconnexion.php"><i class="fa fa-circle text-success"></i> Se déconnecter</a>
+                <p>{$user->name}</p>
+            <a href="/Deconnexion.php"><i class="fa fa-circle text-danger"></i> Se déconnecter</a>
             </div>
         </div>
+END;
+        }
+        $html .= <<<END
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Navigation</li>
             <li><a href="/index.php/listes"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
             <li><a href="/index.php/listeMembres"><i class="fa fa-users"></i> <span>Membres</span></a></li>
+END;
+        if($connected){
+            $html .= <<<END
             <li class="header">Espace personnel</li>
             <li><a href="/index.php/afficherMyProfile"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
             <li><a href="/index.php/createListe"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
             <li><a href="/index.php/myListes"><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
+END;
+        }
+        $html .= <<<END
         </ul>
     </section>
     <!-- /.sidebar -->
