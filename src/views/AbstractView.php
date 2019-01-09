@@ -106,7 +106,7 @@ END;
             </div>
             <div class="pull-left info">
                 <p>Visiteur</p>
-            <a href="/Login.php"><i class="fa fa-circle text-success"></i> Se connecter</a>
+            <a href="/login.php"><i class="fa fa-circle text-success"></i> Se connecter</a>
             </div>
         </div>
 END;
