@@ -137,7 +137,7 @@ END;
 END;
         }
         $html .= <<<END
-            <li><a href="{$app->urlFor('createListe')}"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
+            <li><a href="{$app->urlFor('createListe')}"><i class="fa fa-plus"></i> <span>Nouvelle liste</span></a></li>
             <li><a href="{$app->urlFor('afficherListesUserActuel')}"><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
         </ul>
     </section>
