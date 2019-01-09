@@ -128,6 +128,7 @@ END;
     }
 
     public function renderListes(m\Liste $liste){
+        $app = \Slim\Slim::getInstance();
         $html = <<<END
 <li>
                         <i class="fa fa-list bg-gray"></i>
@@ -135,7 +136,7 @@ END;
                         <div class="timeline-item">
                           <span class="time">{$liste->items->count('*')} item(s)</span>
     
-                          <h3 class="timeline-header no-border"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a>
+                          <h3 class="timeline-header no-border"><a href="{$app->urlfor('afficherListe', array( 'lid' => $liste->no))}">{$liste->titre}</a>
                           </h3>
                         </div>
                     </li>

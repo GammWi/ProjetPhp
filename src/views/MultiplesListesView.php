@@ -23,6 +23,7 @@ class MultiplesListesView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
         $html = <<<END
 	 <div class="box box-danger">
                 <div class="box-header with-border">
@@ -37,7 +38,7 @@ END;
             $html .= <<<END
             <tr>
                 <td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
-                <td class="mailbox-name"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a></td>
+                <td class="mailbox-name"><a href="{$app->urlfor('afficherListe', array( 'lid' => $liste->no))}">{$liste->titre}</a></td>
                 <td class="mailbox-subject">{$liste->description}</td>
 END;
             if($liste->user_id != null){
