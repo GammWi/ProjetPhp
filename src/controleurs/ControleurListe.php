@@ -116,6 +116,7 @@ class ControleurListe
         }
         $l->token = uniqid();
         $l->save();
+	$_SESSION['sessionToken'][]=$l->token;
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $l->no)));
     }

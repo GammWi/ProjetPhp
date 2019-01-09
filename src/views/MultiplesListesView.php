@@ -24,7 +24,7 @@ class MultiplesListesView extends AbstractView
 
     public function render(){
         $html = <<<END
-        <div class="box box-danger">
+	 <div class="box box-danger">
                 <div class="box-header with-border">
                     <h3 class="box-title">Listes</h3>
                 </div>
