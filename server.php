@@ -52,8 +52,7 @@ error_reporting(E_ALL);
         //     	var_dump($donnee);
 	//	var_dump($_POST);
 	//	var_dump($_SESSION);   
-	//	header('location: oui.php');
-		header('location: index.php?oui=1');
+		header('location: index.php');
                 }
                 else
                 {
