@@ -102,28 +102,22 @@ class ControleurListe
      * Fonction permettant d'afficher le créateur liste
      */
     public function afficherCreateurListe() {
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            (new v\CreateListeView())->renderFinal();
-        } else {
-            (new v\ErreurView("Vous n'êtes pas connecté"))->renderFinal();
-        }
+        (new v\CreateListeView())->renderFinal();
     }
 
     public function creerListe() {
+        $l = new m\Liste();
+        $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+        $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
         if(isset($_SESSION['id'])){
-            $l = new m\Liste();
-            $l->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
-            $l->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
             $l->user_id = $_SESSION['id'];
-            $l->save();
-
-            $app = \Slim\Slim::getInstance();
-            $app->redirect($app->urlFor('afficherListe', array('lid' => $l->no)));
-        } else {
-            (new v\ErreurView("Vous n'êtes pas connecté"))->renderFinal();
         }
+        $l->token = uniqid();
+        $l->save();
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $l->no)));
     }
 
     public function supprimerItem($id){
