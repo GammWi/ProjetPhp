@@ -123,5 +123,9 @@ $app->get('/supprimerMessage/:id', function ($id) {
     (new c\ControleurMessage())->supprimerMessageListe($id);
 })->name('supprimerMessage');
 
+$app->post('/associerListe', function () {
+    (new c\ControleurListe())->associerListe();
+})->name('associerListe');
+
 $app->run();
 
