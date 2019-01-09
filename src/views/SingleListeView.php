@@ -155,6 +155,19 @@ END;
                   </div>
                 </div>
               </div>
+
+              <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Date d'expiration : <b>Aucun</b></h3>
+
+                  <div class="box-body no-padding">
+                    <div class="box-body">
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Modifier la date</button>
+                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la date</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 END;
             }
         }
