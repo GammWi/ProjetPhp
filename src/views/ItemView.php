@@ -45,7 +45,7 @@ END;
         if ($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)) {
             if ($this->i->reservation_user == $_SESSION['id']){
                 $html .= <<<END
-            <li><a href="/index.php/annulerReservation/{$this->i->id}">Vous avez réservé cet item, votre message : '<i>{$this->i->reservation_message}</i>' </br><b>Annnuler la réservation</b></a></li>
+            <li><a href="{$app->urlFor('AnnulerUneReservation', array('id' => $this->i->id))}">Vous avez réservé cet item, votre message : '<i>{$this->i->reservation_message}</i>' </br><b>Annnuler la réservation</b></a></li>
 END;
             } else if ( $this->i->reservation_user == null ) {
                 $html .= <<<END
@@ -57,7 +57,7 @@ END;
 END;
             }
             $html.= <<<END
-            <li><a href="/index.php/deleteItem/{$this->i->id}">Supprimer</a></li>
+            <li><a href="{$app->urlfor('deleteItem', array( 'id' => $this->i->id))}">Supprimer</a></li>
 END;
         } else if ($this->i->reservation_user != null){
             $html .= <<<END

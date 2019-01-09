@@ -25,6 +25,7 @@ class MessageView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
         $html = <<<END
         <div class="post">
                   <div class="user-block">
@@ -35,7 +36,7 @@ class MessageView extends AbstractView
 END;
         if($this->m->user_id == $_SESSION['id']){
             $html .= <<<END
-<span class="description">{$this->m->created_at} - <a href="/index.php/supprimerMessage/{$this->m->id}">Supprimer</a></span>
+<span class="description">{$this->m->created_at} - <a href="{$app->urlfor('supprimerMessage', array( 'id' => $this->m->id))}">Supprimer</a></span>
 END;
         } else {
             $html .= <<<END

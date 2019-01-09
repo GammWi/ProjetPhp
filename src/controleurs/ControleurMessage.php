@@ -11,7 +11,6 @@ namespace wishlist\controleurs;
 require_once 'vendor/autoload.php';
 
 use wishlist\models as m;
-use wishlist\views as v;
 
 class ControleurMessage
 {
