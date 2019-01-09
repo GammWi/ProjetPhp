@@ -87,13 +87,6 @@ END;
                       <input type="email" class="form-control" name="email" placeholder="Email" value="{$this->u->email}">
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label">Statut</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" name="statut" placeholder="Écrivez un statut..." value="{$this->u->statut}">
-                    </div>
-                  </div>
                   <input type="hidden" name="id" value="{$this->u->id}"/>
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

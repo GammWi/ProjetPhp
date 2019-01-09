@@ -188,7 +188,28 @@ END;
             if ($this->l->estProprietaireSession($_SESSION)) {
                 $html .= <<<END
               <div class="tab-pane" id="settings">
-                <p><b>Token :</b> {$this->l->token}</p>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>Informations</h4>
+END;
+                $html .= <<<END
+                <p><b>Nom :</b> {$this->l->titre}</p>
+END;
+                if($this->l->user_id != null){
+                    $html .= <<<END
+                <p><b>Propriétaire :</b> {$this->l->user->name}</p>
+END;
+                } else {
+                    $html .= <<<END
+                <p><b>Propriétaire :</b> Aucun (liste rattachée à une session)</p>
+END;
+                }
+                $html .= <<<END
+                <p><b>Token de propriété :</b> {$this->l->token}</p>
+                <p><i>Le token peut être utilisé sur un compte utilisateur (sur la page "Nouvelle liste") afin de transférer la propriété de la liste.</i></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Actions</h4>
 END;
                 if($this->l->publique == 0){
                     $html .= <<<END
@@ -202,7 +223,9 @@ END;
                 $html .= <<<END
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
-              </div>
+                    </div>
+                </div>
+            </div>
 END;
             }
         }
