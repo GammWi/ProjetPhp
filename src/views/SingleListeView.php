@@ -89,7 +89,7 @@ END;
         foreach($this->participations as $participant){
             $html .= <<<END
                 <li>
-                  <img src="{$participant->user->img}" alt="User Image">
+                  <img class="img-circle" src="{$participant->user->img}" alt="User Image">
                   <a class="users-list-name" href="{$app->urlFor('afficherListesUserId', array('userId' => $participant->user->id))}">{$participant->user->name}</a>
 END;
             if($this->l->estProprietaireSession($_SESSION)){
