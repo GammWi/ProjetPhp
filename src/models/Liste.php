@@ -8,7 +8,6 @@
 
 namespace wishlist\models;
 
-
 class Liste extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'liste';
@@ -31,10 +30,37 @@ class Liste extends \Illuminate\Database\Eloquent\Model
         return $this->hasMany('\wishlist\models\Message', 'liste_id')->orderBy('created_at');
     }
 
-    public function peutAcceder(User $u){
+    public function peutAccederSession($session){
         $res = false;
-        if ($u == $this->user || $u->estParticipant($this) || $this->publique == 1){
+        $tokenAllow = false;
+        if(isset($_SESSION['sessionToken'])){
+            foreach ($_SESSION['sessionToken'] as $key => $value){
+                if($value == $this->token){
+                    $tokenAllow = true;
+                }
+            }
+        }
+        if ($this->publique == 1 || $tokenAllow){
             $res = true;
+        } else {
+            if(isset($session['id'])){
+                $u = User::where('id', '=', $session['id'])->first();
+                if($u == $this->user || $u->estParticipant($this)){
+                    $res = true;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public function estProprietaireSession($session){
+        $res = false;
+        if(isset($session['sessionToken'])){
+            foreach ($session['sessionToken'] as $key => $value){
+                if($value == $this->token){
+                    $res = true;
+                }
+            }
         }
         return $res;
     }

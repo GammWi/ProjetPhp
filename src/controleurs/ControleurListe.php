@@ -22,20 +22,9 @@ class ControleurListe
     public function afficherToutesLesListes(){
         $listesAffichables = array();
         $listes = m\Liste::get();
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $userId = $_SESSION['id'];
-            $user = m\User::where('id', '=', $userId)->first();
-            foreach($listes as $l) {
-                if ($l->peutAcceder($user)) {
-                    $listesAffichables[] = $l;
-                }
-            }
-        } else {
-            foreach($listes as $l) {
-                if ($l->publique == 1) {
-                    $listesAffichables[] = $l;
-                }
+        foreach($listes as $l) {
+            if ($l->peutAccederSession($_SESSION)) {
+                $listesAffichables[] = $l;
             }
         }
         (new v\MultiplesListesView($listesAffichables, "Toutes les listes"))->renderFinal();
@@ -48,17 +37,10 @@ class ControleurListe
         $listeid = $lid;
         $liste = m\Liste::where('no', '=', $listeid)->first();
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $userId = $_SESSION['id'];
-            $user = m\User::where('id', '=', $userId)->first();
-            $res = $liste->peutAcceder($user);
-        } else {
-            $res = $liste->publique;
-        }
-        if ($res){
+        if ($liste->peutAccederSession($_SESSION)){
             (new v\SingleListeView($liste))->renderFinal();
         } else {
-            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste (liste privée)"))->renderFinal();
+            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste"))->renderFinal();
         }
     }
 
@@ -69,20 +51,9 @@ class ControleurListe
         $user = m\User::where('id', '=', $userId)->first();
         $listes = $user->listes;
         $listesAffichables = array();
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $userIdRegarder = $_SESSION['id'];
-            $userRegarder = m\User::where('id', '=', $userIdRegarder)->first();
-            foreach($listes as $l){
-                if($l->peutAcceder($userRegarder)){
-                    $listesAffichables[] = $l;
-                }
-            }
-        } else {
-            foreach($listes as $l){
-                if($l->publique == 1){
-                    $listesAffichables[] = $l;
-                }
+        foreach($listes as $l){
+            if($l->peutAccederSession($_SESSION)){
+                $listesAffichables[] = $l;
             }
         }
         $viewName = "Listes de $user->name";
@@ -90,12 +61,23 @@ class ControleurListe
     }
 
     public function afficherListeUtilisateurActuel(){
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
         if(isset($_SESSION['id'])){
             $this->afficherListeUtilisateur($_SESSION['id']);
         } else {
-            (new v\ErreurView("Vous n'êtes pas connecté"))->renderFinal();
+            $allListes = m\Liste::get();
+            $listesAffichables = array();
+            if(isset($_SESSION['sessionToken'])){
+                foreach($allListes as $l){
+                    foreach ($_SESSION['sessionToken'] as $key => $value){
+                        if($value == $l->token){
+                            $listesAffichables[] = $l;
+                        }
+                    }
+                }
+            }
         }
+        $viewName = "Mes listes";
+        (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
     }
 
     /**
@@ -126,10 +108,10 @@ class ControleurListe
         $liste = $i->liste;
         $liste_id = $i->liste_id;
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
+        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
             $user = m\User::where('id', '=', $_SESSION['id'])->first();
             //PROTECTION PERMISSIONS
-            if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
+            if($liste->estProprietaireSession($_SESSION) || $liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
                 $i->delete();
             }
         }
@@ -141,11 +123,12 @@ class ControleurListe
         $user = m\User::where('email', '=', filter_var($_POST['email'], FILTER_SANITIZE_EMAIL))->first();
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
 
+        $l = m\Liste::where("no", "=", $liste_id)->first();
+
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $l = m\Liste::where("no", "=", $liste_id)->first();
+        if($l->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
             //PROTECTION PERMISSIONS
-            if ($l->user_id == $_SESSION["id"]) {
+            if ($l->user_id == $_SESSION["id"] || $l->estProprietaireSession($_SESSION)) {
                 $p = new m\Participation();
                 $p->liste_id = $liste_id;
                 $p->user_id = $user->id;
@@ -163,13 +146,14 @@ class ControleurListe
      * @param $user_id
      */
     public function supprimerParticipant($lid, $uid){
+        $liste_id = filter_var($lid, FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($uid, FILTER_SANITIZE_NUMBER_INT);
+        $l = m\Liste::where("no", "=", $liste_id)->first();
+
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $liste_id = filter_var($lid, FILTER_SANITIZE_NUMBER_INT);
-            $user_id = filter_var($uid, FILTER_SANITIZE_NUMBER_INT);
-            $l = m\Liste::where("no", "=", $liste_id)->first();
+        if($l->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
             //PROTECTION PERMISSIONS
-            if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"]) {
+            if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"] || $l->estProprietaireSession($_SESSION)) {
                 m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
             }
         }
@@ -180,14 +164,14 @@ class ControleurListe
     public function renommerUneListe(){
         //On recupere l'id de la liste
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        //On recupere la liste assosiciee
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            //On recupere la liste assosiciee
-            $liste = m\Liste::where('no', '=', $liste_id)->first();
+        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
             //On recupere le nouveau titre
             //PROTECTION PERMISSIONS
-            if ($liste->user_id == $_SESSION["id"]) {
+            if ($liste->user_id == $_SESSION["id"] || $liste->estProprietaireSession($_SESSION)) {
                 $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
                 $liste->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
                 $liste->save();
@@ -199,14 +183,15 @@ class ControleurListe
     }
 
     public function supprimerUneListe(){
+        //On recupere l'id de la liste
+        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        //On recupere la liste assosiciee
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            //On recupere l'id de la liste
-            $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
-            //On recupere la liste assosiciee
-            $liste = m\Liste::where('no', '=', $liste_id)->first();
+        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
             //PROTECTION PERMISSIONS
-            if ($liste->user_id == $_SESSION["id"]) {
+            if ($liste->user_id == $_SESSION["id"] || $liste->estProprietaireSession($_SESSION)) {
                 $liste->delete();
             }
         }
@@ -219,13 +204,14 @@ class ControleurListe
         //VERIFICATION DES PERMISSIONS DE L'UTILISATEUR
         $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
 
+        $liste = m\Liste::where('no', '=', $liste_id)->first();
+
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $liste = m\Liste::where('no', '=', $liste_id)->first();
+        if(isset($_SESSION['id']) || $liste->estProprietaireSession($_SESSION)){
 
             $user = m\User::where('id', '=', $_SESSION['id'])->first();
             //PROTECTION PERMISSIONS
-            if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
+            if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste) || $liste->estProprietaireSession($_SESSION)){
 
                 //FICHIER DE L'IMAGE
                 $target_dir = "web/uploads/";
@@ -282,9 +268,11 @@ class ControleurListe
     public function rendrePublique(){
         $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $listeId)->first();
-        if ($liste->user_id == $_SESSION['id']){
-            $liste->publique = 1;
-            $liste->save();
+        if($liste->estProprietaireSession($_SESSION) ||isset($_SESSION['id'])){
+            if ($liste->user_id == $_SESSION['id'] || $liste->estProprietaireSession($_SESSION)){
+                $liste->publique = 1;
+                $liste->save();
+            }
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
@@ -296,9 +284,11 @@ class ControleurListe
     public function rendrePrivee(){
         $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $listeId)->first();
-        if ($liste->user_id == $_SESSION['id']){
-            $liste->publique = 0;
-            $liste->save();
+        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
+            if ($liste->user_id == $_SESSION['id'] || $liste->estProprietaireSession($_SESSION)){
+                $liste->publique = 0;
+                $liste->save();
+            }
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
