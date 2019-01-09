@@ -47,7 +47,6 @@ class ControleurProfile
                 //On recupere le nouveau titre
                 $profil->name = filter_var($_POST['pseudonyme'], FILTER_SANITIZE_STRING);
                 $profil->email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-                $profil->statut = filter_var($_POST['statut'], FILTER_SANITIZE_STRING);
                 $profil->save();
             }
         }
