@@ -62,6 +62,36 @@ class Liste extends \Illuminate\Database\Eloquent\Model
                 }
             }
         }
+        if(!$res){
+            if(isset($_SESSION['id'])){
+                if($this->user_id == $_SESSION['id']){
+                    $res = true;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public function estParticipantSession($session){
+        $res = false;
+        if(isset($session['sessionToken'])){
+            foreach ($session['sessionToken'] as $key => $value){
+                if($value == $this->token){
+                    $res = true;
+                }
+            }
+        }
+        if(!$res){
+            if(isset($session['id'])){
+                $user = User::where('id', '=', $session['id'])->first();
+                if($user->estParticipant($this)){
+                    $res = true;
+                }
+                if($this->user_id == $session['id']){
+                    $res = true;
+                }
+            }
+        }
         return $res;
     }
 

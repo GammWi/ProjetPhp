@@ -55,17 +55,14 @@ class SingleListeView extends AbstractView
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
 END;
-        if($connected){
-            $user = m\User::where('id', '=', $_SESSION['id'])->first();
-            if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
-                $html .= <<<END
+        if($this->l->estParticipantSession($_SESSION)){
+            $html .= <<<END
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
                         Ajouter un item
                     </button>
                   </div>
 END;
-            }
         }
         $html .= <<<END
                 </div>
@@ -75,17 +72,14 @@ END;
                 <div class="box-header with-border">
                   <h3 class="box-title">Participants ({$this->participations->count()})</h3>
 END;
-        if($connected){
-            if($this->l->user_id == $_SESSION['id']) {
-                $html .= <<<END
+        if($this->l->estProprietaireSession($_SESSION)){
+            $html .= <<<END
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
                         Ajouter un participant
                     </button>
                   </div>
 END;
-
-            }
         }
         $html .= <<<END
                 </div>
@@ -98,13 +92,10 @@ END;
                   <img src="{$participant->user->img}" alt="User Image">
                   <a class="users-list-name" href="{$app->urlFor('afficherListesUserId', array('userId' => $participant->user->id))}">{$participant->user->name}</a>
 END;
-            if($connected){
-                if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
-                    $html .= <<<END
+            if($this->l->estProprietaireSession($_SESSION)){
+                $html .= <<<END
                 <span class="users-list-date"><a href="{$app->urlFor('deleteParticipant', array('lid' => $this->l->no, 'uid' => $participant->user->id))}">Supprimer</a></span>
-                <span 
 END;
-                }
             }
             $html .= <<<END
                 </li>
@@ -119,9 +110,8 @@ END;
               </div>
 
 END;
-        if($connected){
-            if($this->l->user_id == $_SESSION['id']) {
-                $html .= <<<END
+        if($this->l->estProprietaireSession($_SESSION)){
+            $html .= <<<END
               <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Destinataire : <b>Aucun</b></h3>
@@ -148,7 +138,6 @@ END;
                 </div>
               </div>
 END;
-            }
         }
         $html .= <<<END
 
@@ -158,21 +147,17 @@ END;
             <ul class="nav nav-tabs">
               <li class="active danger"><a href="#items" data-toggle="tab">Items</a></li>
 END;
-        if($connected) {
-            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
-                $html .= <<<END
+        if($this->l->estParticipantSession($_SESSION)) {
+            $html .= <<<END
               <li><a href="#messages" data-toggle="tab">Messages</a></li>
 END;
-            }
         }
         $html .= <<<END
 END;
-        if($connected) {
-            if ($this->l->user_id == $user->id) {
-                $html .= <<<END
+        if($this->l->estProprietaireSession($_SESSION)) {
+            $html .= <<<END
               <li><a href="#settings" data-toggle="tab">Paramètres</a></li>
 END;
-            }
         }
         $html .= <<<END
             </ul>
@@ -187,22 +172,20 @@ END;
         $html .= <<<END
               </div>
 END;
-        if($connected) {
-            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
-                $html .= <<<END
+        if($this->l->estParticipantSession($_SESSION)) {
+            $html .= <<<END
               <div class="tab-pane" id="messages">
                 <button class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-nouveau-message"><b>Nouveau message</b></button>
                 </br>
 END;
-                foreach ($this->l->messages as $message) {
-                    $mv = new v\MessageView($message);
-                    $html .= $mv->render();
-                }
-                $html .= <<<END
+            foreach ($this->l->messages as $message) {
+                $mv = new v\MessageView($message);
+                $html .= $mv->render();
+            }
+            $html .= <<<END
               </div>
 END;
-            }
-            if ($this->l->user_id == $user->id) {
+            if ($this->l->estProprietaireSession($_SESSION)) {
                 $html .= <<<END
               <div class="tab-pane" id="settings">
                 <p><b>Token :</b> {$this->l->token}</p>

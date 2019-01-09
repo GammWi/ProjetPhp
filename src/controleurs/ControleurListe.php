@@ -108,12 +108,8 @@ class ControleurListe
         $liste = $i->liste;
         $liste_id = $i->liste_id;
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
-            $user = m\User::where('id', '=', $_SESSION['id'])->first();
-            //PROTECTION PERMISSIONS
-            if($liste->estProprietaireSession($_SESSION) || $liste->user_id == $_SESSION['id'] || $user->estParticipant($liste)){
-                $i->delete();
-            }
+        if($liste->estParticipantSession($_SESSION)){
+            $i->delete();
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
@@ -126,14 +122,11 @@ class ControleurListe
         $l = m\Liste::where("no", "=", $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($l->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
-            //PROTECTION PERMISSIONS
-            if ($l->user_id == $_SESSION["id"] || $l->estProprietaireSession($_SESSION)) {
-                $p = new m\Participation();
-                $p->liste_id = $liste_id;
-                $p->user_id = $user->id;
-                $p->save();
-            }
+        if($l->estProprietaireSession($_SESSION)){
+            $p = new m\Participation();
+            $p->liste_id = $liste_id;
+            $p->user_id = $user->id;
+            $p->save();
         }
 
         $app = \Slim\Slim::getInstance();
@@ -151,11 +144,8 @@ class ControleurListe
         $l = m\Liste::where("no", "=", $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($l->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
-            //PROTECTION PERMISSIONS
-            if ($l->user_id == $_SESSION["id"] || $user_id == $_SESSION["id"] || $l->estProprietaireSession($_SESSION)) {
-                m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
-            }
+        if($l->estProprietaireSession($_SESSION)){
+            m\Participation::where([['liste_id', '=', $liste_id], ['user_id', '=', $user_id]])->delete();
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste_id)));
@@ -168,14 +158,11 @@ class ControleurListe
         $liste = m\Liste::where('no', '=', $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
+        if($liste->estProprietaireSession($_SESSION)){
             //On recupere le nouveau titre
-            //PROTECTION PERMISSIONS
-            if ($liste->user_id == $_SESSION["id"] || $liste->estProprietaireSession($_SESSION)) {
-                $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
-                $liste->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-                $liste->save();
-            }
+            $liste->titre = filter_var($_POST['titre'], FILTER_SANITIZE_STRING);
+            $liste->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+            $liste->save();
         }
 
         $app = \Slim\Slim::getInstance();
@@ -189,11 +176,9 @@ class ControleurListe
         $liste = m\Liste::where('no', '=', $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
+        if($liste->estProprietaireSession($_SESSION)){
             //PROTECTION PERMISSIONS
-            if ($liste->user_id == $_SESSION["id"] || $liste->estProprietaireSession($_SESSION)) {
-                $liste->delete();
-            }
+            $liste->delete();
         }
 
         $app = \Slim\Slim::getInstance();
@@ -207,12 +192,7 @@ class ControleurListe
         $liste = m\Liste::where('no', '=', $liste_id)->first();
 
         //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id']) || $liste->estProprietaireSession($_SESSION)){
-
-            $user = m\User::where('id', '=', $_SESSION['id'])->first();
-            //PROTECTION PERMISSIONS
-            if($liste->user_id == $_SESSION['id'] || $user->estParticipant($liste) || $liste->estProprietaireSession($_SESSION)){
-
+        if($liste->estProprietaireSession($_SESSION)){
                 //FICHIER DE L'IMAGE
                 $target_dir = "web/uploads/";
                 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -254,7 +234,6 @@ class ControleurListe
                     } else {
                         $i->delete();
                     }
-                }
             }
         }
 
@@ -268,11 +247,9 @@ class ControleurListe
     public function rendrePublique(){
         $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $listeId)->first();
-        if($liste->estProprietaireSession($_SESSION) ||isset($_SESSION['id'])){
-            if ($liste->user_id == $_SESSION['id'] || $liste->estProprietaireSession($_SESSION)){
-                $liste->publique = 1;
-                $liste->save();
-            }
+        if($liste->estProprietaireSession($_SESSION)){
+            $liste->publique = 1;
+            $liste->save();
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
@@ -284,11 +261,9 @@ class ControleurListe
     public function rendrePrivee(){
         $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $liste = m\Liste::where('no', '=', $listeId)->first();
-        if($liste->estProprietaireSession($_SESSION) || isset($_SESSION['id'])){
-            if ($liste->user_id == $_SESSION['id'] || $liste->estProprietaireSession($_SESSION)){
-                $liste->publique = 0;
-                $liste->save();
-            }
+        if($liste->estProprietaireSession($_SESSION)){
+            $liste->publique = 0;
+            $liste->save();
         }
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
