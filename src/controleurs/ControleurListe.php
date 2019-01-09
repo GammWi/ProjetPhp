@@ -302,4 +302,19 @@ class ControleurListe
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
     }
+
+    public function associerListe() {
+        $liste_token = filter_var($_POST['token'], FILTER_SANITIZE_STRING);
+        $liste = m\Liste::where('token', '=', $liste_token)->first();
+
+        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
+        if(isset($_SESSION['id'])){
+            $liste->user_id = $_SESSION['id'];
+            $liste->token = uniqid();
+            $liste->save();
+        }
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $liste->no)));
+    }
 }
