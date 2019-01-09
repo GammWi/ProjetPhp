@@ -39,7 +39,17 @@ END;
                 <td class="mailbox-star"><i class="fa fa-star text-yellow"></i></td>
                 <td class="mailbox-name"><a href="/index.php/liste/{$liste->no}">{$liste->titre}</a></td>
                 <td class="mailbox-subject">{$liste->description}</td>
+END;
+            if($liste->user_id != null){
+                $html .= <<<END
                 <td class="mailbox-subject">Créée par {$liste->user->name}</td>
+END;
+            } else {
+                $html .= <<<END
+                <td class="mailbox-subject">Créée par un utilisateur anonyme</td>
+END;
+            }
+            $html .= <<<END
             </tr>
 END;
         }
