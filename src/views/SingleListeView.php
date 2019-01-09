@@ -27,7 +27,11 @@ class SingleListeView extends AbstractView
         $this->l = $liste;
         $this->viewName = $this->l->titre;
         $this->participations = $this->l->participations;
-        $this->viewDescription = "créée par " . $this->l->user->name;
+        if($this->l->user != null){
+            $this->viewDescription = "créée par " . $this->l->user->name;
+        } else {
+            $this->viewDescription = "créée par un utilisateur anonyme";
+        }
         $this->alertMessage = $alertMessage;
     }
 
