@@ -91,8 +91,11 @@
       ?>
 
     </form>
-    <!-- /.social-auth-links -->
-    <a href="register.php" class="text-center">Créer un compte</a>
+      <div class="social-auth-links text-center">
+          <p>- OU -</p>
+          <a href="register.php" class="btn btn-primary btn-block btn-flat btn-sm">Créer un compte</a>
+      </div>
+      <a href="index.php" class="text-center"><i class="icon fa fa-home"></i> Retour au site</a>
 
   </div>
   <!-- /.login-box-body -->

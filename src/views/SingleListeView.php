@@ -41,6 +41,7 @@ class SingleListeView extends AbstractView
         $rendrePrive = $app->urlFor('rendrePrivee');
         $nouveauMessage = $app->urlFor('nouveauMessageListe');
 
+        $connected = isset($_SESSION['id']);
 
         $html = <<<END
     <div class="row">
@@ -50,15 +51,17 @@ class SingleListeView extends AbstractView
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
 END;
-        $user = m\User::where('id', '=', $_SESSION['id'])->first();
-        if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
-            $html .= <<<END
+        if($connected){
+            $user = m\User::where('id', '=', $_SESSION['id'])->first();
+            if($_SESSION['id'] == $this->l->user_id || $user->estParticipant($this->l)) {
+                $html .= <<<END
                   <div class="box-tools pull-right">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-add-item">
                         Ajouter un item
                     </button>
                   </div>
 END;
+            }
         }
         $html .= <<<END
                 </div>
@@ -68,8 +71,9 @@ END;
                 <div class="box-header with-border">
                   <h3 class="box-title">Participants ({$this->participations->count()})</h3>
 END;
-        if($this->l->user_id == $_SESSION['id']) {
-            $html .= <<<END
+        if($connected){
+            if($this->l->user_id == $_SESSION['id']) {
+                $html .= <<<END
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-participant">
                         Ajouter un participant
@@ -77,6 +81,7 @@ END;
                   </div>
 END;
 
+            }
         }
         $html .= <<<END
                 </div>
@@ -89,11 +94,13 @@ END;
                   <img src="{$participant->user->img}" alt="User Image">
                   <a class="users-list-name" href="{$app->urlFor('afficherListesUserId', array('userId' => $participant->user->id))}">{$participant->user->name}</a>
 END;
-            if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
-                $html .= <<<END
+            if($connected){
+                if($_SESSION['id'] == $this->l->user_id || $_SESSION['id'] == $participant->user->id){
+                    $html .= <<<END
                 <span class="users-list-date"><a href="{$app->urlFor('deleteParticipant', array('lid' => $this->l->no, 'uid' => $participant->user->id))}">Supprimer</a></span>
                 <span 
 END;
+                }
             }
             $html .= <<<END
                 </li>
@@ -108,8 +115,9 @@ END;
               </div>
 
 END;
-        if($this->l->user_id == $_SESSION['id']) {
-            $html .= <<<END
+        if($connected){
+            if($this->l->user_id == $_SESSION['id']) {
+                $html .= <<<END
 
               <div class="box box-danger">
                 <div class="box-header with-border">
@@ -118,16 +126,16 @@ END;
                   <div class="box-body no-padding">
                     <div class="box-body">
 END;
-            if($this->l->publique == 0){
-                $html .= <<<END
+                if($this->l->publique == 0){
+                    $html .= <<<END
                       <button type="button" class="btn btn-success btn-block btn-sm" data-toggle="modal" data-target="#modal-publier-liste">Rendre publique</button>
 END;
-            } else {
-                $html .= <<<END
+                } else {
+                    $html .= <<<END
                       <button type="button" class="btn btn-danger btn-block btn-sm" data-toggle="modal" data-target="#modal-privatiser-liste">Rendre privée</button>
 END;
-            }
-            $html .= <<<END
+                }
+                $html .= <<<END
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Renommer la liste</button>
                       <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la liste</button>
                     </div>
@@ -148,6 +156,7 @@ END;
                 </div>
               </div>
 END;
+            }
         }
         $html .= <<<END
 
@@ -156,7 +165,15 @@ END;
             <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active danger"><a href="#items" data-toggle="tab">Items</a></li>
+END;
+        if($connected) {
+            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
+                $html .= <<<END
               <li><a href="#messages" data-toggle="tab">Messages</a></li>
+END;
+            }
+        }
+        $html .= <<<END
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="items">
@@ -168,16 +185,24 @@ END;
         }
         $html .= <<<END
               </div>
+END;
+        if($connected) {
+            if ($this->l->user_id == $user->id || $user->estParticipant($this->l)) {
+                $html .= <<<END
               <div class="tab-pane" id="messages">
                 <button class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-nouveau-message"><b>Nouveau message</b></button>
                 </br>
 END;
-        foreach ($this->l->messages as $message){
-            $mv = new v\MessageView($message);
-            $html .= $mv->render();
+                foreach ($this->l->messages as $message) {
+                    $mv = new v\MessageView($message);
+                    $html .= $mv->render();
+                }
+                $html .= <<<END
+              </div>
+END;
+            }
         }
         $html .= <<<END
-              </div>
             </div>
           </div>
         </div>
@@ -386,6 +411,9 @@ END;
           </div>
         </div>
 
+END;
+        if($connected){
+            $html .= <<<END
         <!-- modal pour envoyer un nouveau message -->
         <div class="modal fade" id="modal-nouveau-message">
           <div class="modal-dialog">
@@ -413,8 +441,9 @@ END;
             </div>
           </div>
         </div>
-
 END;
+        }
+
         echo $html;
     }
 

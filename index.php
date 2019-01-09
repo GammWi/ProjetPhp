@@ -19,9 +19,6 @@ use wishlist\controleurs as c;
 use wishlist\views as v;
 use wishlist\models as m;
 
-if(!empty($_SESSION))
-{
-
 $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection(parse_ini_file('src/conf/conf.ini'));
 $db->setAsGlobal();
@@ -30,8 +27,8 @@ $db->bootEloquent();
 $app = new \Slim\Slim();
 
 $app->get('/', function () {
-    (new c\ControleurProfile())->afficherMonProfile();
-});
+    (new c\ControleurListe())->afficherToutesLesListes();
+})->name('home');
 
 $app->get('/listes', function () {
     (new c\ControleurListe())->afficherToutesLesListes();
@@ -127,10 +124,4 @@ $app->get('/supprimerMessage/:id', function ($id) {
 })->name('supprimerMessage');
 
 $app->run();
-}
-else
-{
-//var_dump($_SESSION);
-//var_dump($rememberMe);
-	header("Location:/login.php?error=needLogin");
-}
+
