@@ -75,9 +75,9 @@ class ControleurListe
                     }
                 }
             }
+            $viewName = "Mes listes";
+            (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
         }
-        $viewName = "Mes listes";
-        (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
     }
 
     /**
