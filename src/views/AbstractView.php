@@ -66,6 +66,8 @@ END;
      * fonction qui permet d'afficher le corps
      */
     function renderBody(){
+        $app = \Slim\Slim::getInstance();
+
         $connected = isset($_SESSION['id']);
         if($connected){
             $user = m\User::where('id', '=', $_SESSION['id'])->first();
@@ -125,15 +127,15 @@ END;
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Navigation</li>
-            <li><a href="/index.php/listes"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
-            <li><a href="/index.php/listeMembres"><i class="fa fa-users"></i> <span>Membres</span></a></li>
+            <li><a href="{$app->urlFor('afficherToutesLesListes')}"><i class="fa fa-list"></i> <span>Toutes les listes</span></a></li>
+            <li><a href="{$app->urlFor('afficherMembres')}s"><i class="fa fa-users"></i> <span>Membres</span></a></li>
 END;
         if($connected){
             $html .= <<<END
             <li class="header">Espace personnel</li>
-            <li><a href="/index.php/afficherMyProfile"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
-            <li><a href="/index.php/createListe"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
-            <li><a href="/index.php/myListes"><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
+            <li><a href="{$app->urlFor('afficherMyProfile')}"><i class="fa fa-user"></i> <span>Mon compte</span></a></li>
+            <li><a href="{$app->urlFor('createListe')}"><i class="fa fa-plus"></i> <span>Créer une liste</span></a></li>
+            <li><a href="{$app->urlFor('afficherListesUserActuel')}"><i class="fa fa-list"></i> <span>Mes listes</span></a></li>
 END;
         }
         $html .= <<<END

@@ -38,4 +38,8 @@ class Liste extends \Illuminate\Database\Eloquent\Model
         }
         return $res;
     }
+
+    public function destinataire(){
+        return $this->belongsTo('\wishlist\models\User','destinataire');
+    }
 }

@@ -26,6 +26,7 @@ class MembresListeView extends AbstractView
     }
 
     public function render(){
+        $app = \Slim\Slim::getInstance();
         $html = <<<END
         <div class="row">
         <div class="col-md-9">
@@ -42,7 +43,7 @@ END;
             $html .= <<<END
             <tr>
                 <td class="mailbox-star"><i class="fa fa-user"></i></td>
-                <td class="mailbox-name"><a href="/index.php/userListes/{$user->id}">{$user->name}</a></td>
+                <td class="mailbox-name"><a href="{$app->urlfor('afficherListesUserId', array('userId'=>$user->id))}">{$user->name}</a></td>
                 <td class="mailbox-subject">{$user->email}</td>
             </tr>
 END;
