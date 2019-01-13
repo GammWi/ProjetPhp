@@ -127,5 +127,21 @@ $app->post('/associerListe', function () {
     (new c\ControleurListe())->associerListe();
 })->name('associerListe');
 
+$app->post('/modifierDestinataire', function () {
+    (new c\ControleurListe())->modifierDestinataire();
+})->name('modifierDestinataireListe');
+
+$app->get('/supprimerDestinataire/:lid', function ($lid) {
+    (new c\ControleurListe())->supprimerDestinataire($lid);
+})->name('supprimerDestinataireListe');
+
+$app->post('/modifierEcheance', function () {
+    (new c\ControleurListe())->modifierEcheance();
+})->name('modifierEcheanceListe');
+
+$app->get('/supprimerEcheance/:lid', function ($lid) {
+    (new c\ControleurListe())->supprimerEcheance($lid);
+})->name('supprimerEcheanceListe');
+
 $app->run();
 

@@ -22,6 +22,10 @@ class Liste extends \Illuminate\Database\Eloquent\Model
         return $this->belongsTo('\wishlist\models\User','user_id');
     }
 
+    public function destinataire(){
+        return $this->belongsTo('\wishlist\models\User','destinataire_id');
+    }
+
     public function participations(){
         return $this->hasMany('\wishlist\models\Participation', 'liste_id');
     }
@@ -93,9 +97,5 @@ class Liste extends \Illuminate\Database\Eloquent\Model
             }
         }
         return $res;
-    }
-
-    public function destinataire(){
-        return $this->belongsTo('\wishlist\models\User','destinataire');
     }
 }

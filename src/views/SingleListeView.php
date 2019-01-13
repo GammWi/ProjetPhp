@@ -44,6 +44,8 @@ class SingleListeView extends AbstractView
         $rendrePublique = $app->urlFor('rendrePublique');
         $rendrePrive = $app->urlFor('rendrePrivee');
         $nouveauMessage = $app->urlFor('nouveauMessageListe');
+        $modifierDestinataire = $app->urlFor('modifierDestinataireListe');
+        $modifierEcheance = $app->urlFor('modifierEcheanceListe');
 
         $connected = isset($_SESSION['id']);
 
@@ -110,31 +112,62 @@ END;
               </div>
 
 END;
-        if($this->l->estProprietaireSession($_SESSION)){
+        if($this->l->estParticipantSession($_SESSION)){
             $html .= <<<END
               <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Destinataire : <b>Aucun</b></h3>
+                  <h3 class="box-title">Informations</h3>
 
                   <div class="box-body no-padding">
                     <div class="box-body">
-                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Modifier le destinataire</button>
-                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer le destinataire</button>
                     </div>
                   </div>
+                  <div class="box-footer text-center">
+END;
+            if($this->l->destinataire_id != null){
+                if($this->l->estProprietaireSession($_SESSION)){
+                    $html .= <<<END
+                <span><b>Destinataire :</b> {$this->l->destinataire->name} (<a data-toggle="modal" data-target="#modal-modifier-destinataire">Modifier</a> | <a href="{$app->urlfor('supprimerDestinataireListe', array( 'lid' => $this->l->no))}">Supprimer</a>)</span></br></br>
+END;
+                } else {
+                    $html .= <<<END
+                <span><b>Destinataire :</b> {$this->l->destinataire->name}</span></br></br>
+END;
+                }
+            } else {
+                if($this->l->estProprietaireSession($_SESSION)){
+                    $html .= <<<END
+                <span><a data-toggle="modal" data-target="#modal-modifier-destinataire">Définir un destinataire</a></span></br></br>
+END;
+                } else {
+                    $html .= <<<END
+                <span><i>Aucun destinataire</i></span></br></br>
+END;
+                }
+            }
+            if($this->l->expiration != null){
+                if($this->l->estProprietaireSession($_SESSION)){
+                    $html .= <<<END
+                <span><b>Échéance :</b> {$this->l->expiration} (<a data-toggle="modal" data-target="#modal-modifier-echeance">Modifier</a> | <a href="{$app->urlfor('supprimerEcheanceListe', array( 'lid' => $this->l->no))}">Supprimer</a>)</span>
+END;
+                } else {
+                    $html .= <<<END
+                <span><b>Échéance :</b> {$this->l->expiration}</span>
+END;
+                }
+            } else {
+                if($this->l->estProprietaireSession($_SESSION)){
+                    $html .= <<<END
+                <span><a data-toggle="modal" data-target="#modal-modifier-echeance">Définir une date d'échéance</a></span>
+END;
+                } else {
+                    $html .= <<<END
+                <span><i>Aucun date d'échéance</i></span>
+END;
+                }
+            }
+            $html .= <<<END
                 </div>
-              </div>
-
-              <div class="box box-danger">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Date d'expiration : <b>Aucun</b></h3>
-
-                  <div class="box-body no-padding">
-                    <div class="box-body">
-                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-rename-liste">Modifier la date</button>
-                      <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#modal-supprimer-liste">Supprimer la date</button>
-                    </div>
-                  </div>
                 </div>
               </div>
 END;
@@ -432,6 +465,64 @@ END;
                     <div class="box-footer">
                         <button type="submit" class="btn btn-danger pull-right">Rendre cette liste privée</button>
                     </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- modal modifier destinataire -->
+        <div class="modal fade" id="modal-modifier-destinataire">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modifier le destinataire</h4>
+              </div>
+              <div class="modal-body">
+                <form action="$modifierDestinataire" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                          <label>Adresse mail du destinataire</label>
+                          <input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire" value="{$this->l->destinataire->email}">
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Modifier le destinataire</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- modal modifier destinataire -->
+        <div class="modal fade" id="modal-modifier-echeance">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modifier la date d'échéance</h4>
+              </div>
+              <div class="modal-body">
+                <form action="$modifierEcheance" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                          <label>Date d'échéance (format : année-mois-jour)</label>
+                          <input type="text" class="form-control" name="email" placeholder="AAAA-MM-JJ" value="{$this->l->expiration}">
+                        </div>
+                        <input type="hidden" name="liste_id" value="{$this->l->no}"/>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-danger pull-right">Modifier la date d'échéance</button>
+                    </div>
+                    <!-- /.box-footer -->
                 </form>
               </div>
             </div>

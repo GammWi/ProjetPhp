@@ -283,4 +283,53 @@ class ControleurListe
         $app = \Slim\Slim::getInstance();
         $app->redirect($app->urlFor('afficherListe', array('lid' => $liste->no)));
     }
+
+    public function modifierDestinataire(){
+        $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $destinataire_email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+
+        $destinataire = m\User::where('email', '=', $destinataire_email)->first();
+        if($destinataire != null){
+            $liste = m\Liste::where('no', '=', $listeId)->first();
+            $liste->destinataire_id = $destinataire->id;
+            $liste->save();
+        }
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
+
+    public function supprimerDestinataire($id){
+        $listeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+        $liste->destinataire_id = NULL;
+        $liste->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
+
+    public function modifierEcheance(){
+        $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $nouvelle_date = filter_var($_POST['echeance'], FILTER_SANITIZE_STRING);
+
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+        $liste->expiration = $nouvelle_date;
+        $liste->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
+
+    public function supprimerEcheance($id){
+        $listeId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $liste = m\Liste::where('no', '=', $listeId)->first();
+        $liste->expiration = NULL;
+        $liste->save();
+
+        $app = \Slim\Slim::getInstance();
+        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+    }
 }
