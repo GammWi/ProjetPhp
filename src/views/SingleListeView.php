@@ -485,7 +485,17 @@ END;
                     <div class="box-body">
                         <div class="form-group">
                           <label>Adresse mail du destinataire</label>
-                          <input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire" value="{$this->l->destinataire->email}">
+END;
+                          if($this->l->destinataire != null){
+                              $html .= <<<END
+<input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire" value="{$this->l->destinataire->email}">
+END;
+                          } else {
+                              $html .= <<<END
+<input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire">
+END;
+                          }
+            $html .= <<<END
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
