@@ -116,21 +116,26 @@ class ControleurListe
     }
 
     public function ajouterParticipant(){
-        $user = m\User::where('email', '=', filter_var($_POST['email'], FILTER_SANITIZE_EMAIL))->first();
-        $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
+        $user_liste = m\User::where('email', '=', filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
+        if($user_liste->count() == 1){
+            $user = $user_liste->first();
+            $liste_id = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
 
-        $l = m\Liste::where("no", "=", $liste_id)->first();
+            $l = m\Liste::where("no", "=", $liste_id)->first();
 
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if($l->estProprietaireSession($_SESSION)){
-            $p = new m\Participation();
-            $p->liste_id = $liste_id;
-            $p->user_id = $user->id;
-            $p->save();
+            //SI L'UTILISATEUR EST CONNECTÉ AU SITE
+            if($l->estProprietaireSession($_SESSION)){
+                $p = new m\Participation();
+                $p->liste_id = $liste_id;
+                $p->user_id = $user->id;
+                $p->save();
+            }
+
+            $app = \Slim\Slim::getInstance();
+            $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
+        } else {
+            (new v\ErreurView("Impossible de trouver un utilisateur dont l'adresse email est " . filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)))->renderFinal();
         }
-
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', ['lid' => $liste_id]));
     }
 
     /**
@@ -271,32 +276,42 @@ class ControleurListe
 
     public function associerListe() {
         $liste_token = filter_var($_POST['token'], FILTER_SANITIZE_STRING);
-        $liste = m\Liste::where('token', '=', $liste_token)->first();
+        $liste_l = m\Liste::where('token', '=', $liste_token);
+        if($liste_l->count() == 1){
+            $liste = $liste_l->first();
 
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if(isset($_SESSION['id'])){
-            $liste->user_id = $_SESSION['id'];
-            $liste->token = uniqid();
-            $liste->save();
+            //SI L'UTILISATEUR EST CONNECTÉ AU SITE
+            if(isset($_SESSION['id'])){
+                $liste->user_id = $_SESSION['id'];
+                $liste->token = uniqid();
+                $liste->save();
+            }
+
+            $app = \Slim\Slim::getInstance();
+            $app->redirect($app->urlFor('afficherListe', array('lid' => $liste->no)));
+        } else {
+            (new v\ErreurView("Impossible de trouver une liste dont le token est " . filter_var($_POST['token'], FILTER_SANITIZE_STRING)))->renderFinal();
         }
-
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', array('lid' => $liste->no)));
     }
 
     public function modifierDestinataire(){
         $listeId = filter_var($_POST['liste_id'], FILTER_SANITIZE_NUMBER_INT);
         $destinataire_email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
 
-        $destinataire = m\User::where('email', '=', $destinataire_email)->first();
-        if($destinataire != null){
-            $liste = m\Liste::where('no', '=', $listeId)->first();
-            $liste->destinataire_id = $destinataire->id;
-            $liste->save();
-        }
+        $destinataire_liste = m\User::where('email', '=', $destinataire_email);
+        if($destinataire_liste->count() == 1) {
+            $destinataire = $destinataire_liste->first();
+            if($destinataire != null){
+                $liste = m\Liste::where('no', '=', $listeId)->first();
+                $liste->destinataire_id = $destinataire->id;
+                $liste->save();
+            }
 
-        $app = \Slim\Slim::getInstance();
-        $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+            $app = \Slim\Slim::getInstance();
+            $app->redirect($app->urlFor('afficherListe', array('lid' => $listeId)));
+        } else {
+            (new v\ErreurView("Impossible de trouver un utilisateur dont l'adresse email est " . filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)))->renderFinal();
+        }
     }
 
     public function supprimerDestinataire($id){

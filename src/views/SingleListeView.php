@@ -48,7 +48,6 @@ class SingleListeView extends AbstractView
         $modifierEcheance = $app->urlFor('modifierEcheanceListe');
 
         $connected = isset($_SESSION['id']);
-
         $html = <<<END
     <div class="row">
         <div class="col-md-4">
@@ -57,6 +56,7 @@ class SingleListeView extends AbstractView
                 <div class="box-header with-border">
                   <h3 class="box-title">Items ({$this->l->items()->count()})</h3>
 END;
+
         if($this->l->estParticipantSession($_SESSION)){
             $html .= <<<END
                   <div class="box-tools pull-right">
@@ -488,11 +488,11 @@ END;
 END;
                           if($this->l->destinataire != null){
                               $html .= <<<END
-<input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire" value="{$this->l->destinataire->email}">
+<input type="email" class="form-control" name="email" placeholder="Adresse mail du destinataire" value="{$this->l->destinataire->email}">
 END;
                           } else {
                               $html .= <<<END
-<input type="text" class="form-control" name="email" placeholder="Adresse mail du destinataire">
+<input type="email" class="form-control" name="email" placeholder="Adresse mail du destinataire">
 END;
                           }
             $html .= <<<END
