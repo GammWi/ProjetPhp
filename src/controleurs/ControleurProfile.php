@@ -29,11 +29,6 @@ class ControleurProfile
         }
     }
 
-    public function afficherProfile($id) {
-        $user = m\User::where('id', '=', $id)->first();
-        (new v\MyProfileView($user))->renderFinal();
-    }
-
     public function updateProfileInformations(){
         //On recupere le profil
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);

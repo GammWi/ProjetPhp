@@ -35,12 +35,17 @@ class ControleurListe
      */
     public function afficherListe($lid) {
         $listeid = $lid;
-        $liste = m\Liste::where('no', '=', $listeid)->first();
-        //SI L'UTILISATEUR EST CONNECTÉ AU SITE
-        if ($liste->peutAccederSession($_SESSION)){
-            (new v\SingleListeView($liste))->renderFinal();
+        $liste_l = m\Liste::where('no', '=', $listeid);
+        if($liste_l->count() == 1){
+            $liste = $liste_l->first();
+            //SI L'UTILISATEUR EST CONNECTÉ AU SITE
+            if ($liste->peutAccederSession($_SESSION)){
+                (new v\SingleListeView($liste))->renderFinal();
+            } else {
+                (new v\ErreurView("Vous ne pouvez pas accéder à cette liste"))->renderFinal();
+            }
         } else {
-            (new v\ErreurView("Vous ne pouvez pas accéder à cette liste"))->renderFinal();
+            (new v\ErreurView("Liste introuvable"))->renderFinal();
         }
     }
 
@@ -48,16 +53,21 @@ class ControleurListe
      * Fonction permettant d'afficher les listes d'un utilisateur
      */
     public function afficherListeUtilisateur($userId) {
-        $user = m\User::where('id', '=', $userId)->first();
-        $listes = $user->listes;
-        $listesAffichables = array();
-        foreach($listes as $l){
-            if($l->peutAccederSession($_SESSION)){
-                $listesAffichables[] = $l;
+        $user_liste = m\User::where('id', '=', $userId);
+        if($user_liste->count() == 1){
+            $user = $user_liste->first();
+            $listes = $user->listes;
+            $listesAffichables = array();
+            foreach($listes as $l){
+                if($l->peutAccederSession($_SESSION)){
+                    $listesAffichables[] = $l;
+                }
             }
+            $viewName = "Listes de $user->name";
+            (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
+        } else {
+            (new v\ErreurView("Utilisateur introuvable"))->renderFinal();
         }
-        $viewName = "Listes de $user->name";
-        (new v\MultiplesListesView($listesAffichables, $viewName))->renderFinal();
     }
 
     public function afficherListeUtilisateurActuel(){
