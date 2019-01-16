@@ -524,7 +524,7 @@ END;
                     <div class="box-body">
                         <div class="form-group">
                           <label>Date d'échéance (format : année-mois-jour)</label>
-                          <input type="text" class="form-control" name="email" placeholder="AAAA-MM-JJ" value="{$this->l->expiration}">
+                          <input type="date" class="form-control" name="echeance" placeholder="AAAA-MM-JJ" value="{$this->l->expiration}">
                         </div>
                         <input type="hidden" name="liste_id" value="{$this->l->no}"/>
                     </div>
